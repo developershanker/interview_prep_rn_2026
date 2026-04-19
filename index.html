@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senior RN Interview Study Guide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f4f0; color: #1a1a18; font-size: 15px; line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
+
+  .stats { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .stat { background: #fff; border: 1px solid #e0e0da; border-radius: 10px; padding: 12px 16px; text-align: center; flex: 1; min-width: 100px; }
+  .stat-num { font-size: 20px; font-weight: 600; }
+  .stat-lbl { font-size: 11px; color: #888; margin-top: 2px; }
+
+  .tip { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #1e40af; margin-bottom: 20px; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tab-btn { padding: 8px 16px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; cursor: pointer; background: #fff; color: #555; font-family: inherit; transition: all 0.15s; }
+  .tab-btn.active { background: #1a1a18; color: #fff; border-color: #1a1a18; }
+  .tab-btn:hover:not(.active) { background: #f0f0ec; }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .card { background: #fff; border: 1px solid #e0e0da; border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.15s; }
+  .card:hover { border-color: #888; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transform: translateY(-1px); }
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; margin-bottom: 8px; }
+  .badge-hot { background: #FEE2E2; color: #991b1b; }
+  .badge-core { background: #DBEAFE; color: #1e40af; }
+  .badge-imp { background: #FEF3C7; color: #92400e; }
+  .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .card p { font-size: 12px; color: #666; line-height: 1.5; }
+
+  /* MODAL */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }
+  .modal-bg.open { display: flex; }
+  .modal { background: #fff; border-radius: 16px; width: 100%; max-width: 660px; max-height: 88vh; overflow-y: auto; padding: 24px; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: #f0f0ec; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .modal h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; padding-right: 40px; }
+  .modal-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin: 16px 0 6px; }
+  .explain { background: #f8f8f5; border-radius: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.7; }
+  .interview-say { background: #EFF6FF; border-left: 3px solid #3b82f6; border-radius: 0 10px 10px 0; padding: 14px 16px; font-size: 13px; line-height: 1.7; color: #1e3a8a; font-style: italic; }
+  .code { background: #1c1c1e; color: #e0e0e0; border-radius: 10px; padding: 14px 16px; font-family: 'Menlo', 'Monaco', 'Courier New', monospace; font-size: 12px; line-height: 1.65; overflow-x: auto; white-space: pre; }
+  .qa { margin-top: 6px; }
+  .qa-item { border-bottom: 1px solid #f0f0ec; padding: 10px 0; }
+  .qa-item:last-child { border-bottom: none; }
+  .qa-q { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .qa-a { font-size: 12px; color: #555; line-height: 1.6; padding-left: 12px; border-left: 2px solid #ddd; }
+
+  /* DSA & SYSTEM DESIGN */
+  .roadmap { display: flex; flex-direction: column; gap: 14px; }
+  .phase { background: #fff; border: 1px solid #e0e0da; border-radius: 12px; padding: 18px; }
+  .phase h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .phase .week-lbl { font-size: 12px; color: #888; margin-bottom: 12px; }
+  .phase ul { list-style: none; padding: 0; }
+  .phase ul li { font-size: 13px; color: #333; padding: 4px 0; display: flex; gap: 8px; line-height: 1.5; }
+  .phase ul li::before { content: '→'; color: #aaa; flex-shrink: 0; }
+  .tip-green { background: #F0FDF4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #166534; margin: 10px 0; line-height: 1.6; }
+  .tip-amber { background: #FFFBEB; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #92400e; margin: 10px 0; line-height: 1.6; }
+
+  .code-sm { background: #1c1c1e; color: #e0e0e0; border-radius: 8px; padding: 10px 14px; font-family: 'Menlo', 'Monaco', monospace; font-size: 11.5px; line-height: 1.6; overflow-x: auto; white-space: pre; margin: 8px 0; }
+
+  @media (max-width: 500px) {
+    .grid { grid-template-columns: 1fr; }
+    .stats { flex-wrap: wrap; }
+    .stat { min-width: 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Senior React Native Interview Guide</h1>
+  <p class="subtitle">8 YoE level &nbsp;·&nbsp; Click any card → see explanation + interview answer + Q&amp;A</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">34+</div><div class="stat-lbl">Topics</div></div>
+    <div class="stat"><div class="stat-num">3–4 hrs</div><div class="stat-lbl">Daily study</div></div>
+    <div class="stat"><div class="stat-num">8 weeks</div><div class="stat-lbl">Full prep</div></div>
+    <div class="stat"><div class="stat-num">Wk 1–4</div><div class="stat-lbl">JS+React+RN+TS</div></div>
+    <div class="stat"><div class="stat-num">Wk 5–8</div><div class="stat-lbl">DSA+System Design</div></div>
+  </div>
+
+  <div class="tip">💡 <strong>How to use:</strong> Click any card to see the concept explained simply, the key code pattern, exactly what to say to the interviewer, and the most asked follow-up questions.</div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('js', this)">JS Fundamentals</button>
+    <button class="tab-btn" onclick="showTab('react', this)">React / Hooks</button>
+    <button class="tab-btn" onclick="showTab('rn', this)">React Native</button>
+    <button class="tab-btn" onclick="showTab('ts', this)">TypeScript</button>
+    <button class="tab-btn" onclick="showTab('render', this)">Rendering</button>
+    <button class="tab-btn" onclick="showTab('dsa', this)">DSA Roadmap</button>
+    <button class="tab-btn" onclick="showTab('sysdesign', this)">System Design</button>
+    <button class="tab-btn" onclick="showTab('whatsnew', this)">🆕 RN 0.76–0.82+</button>
+    <button class="tab-btn" onclick="showTab('stories', this)">🗂️ My Work Stories</button>
+  </div>
+
+  <!-- ===== JS FUNDAMENTALS ===== -->
+  <div class="section active" id="tab-js">
+    <div class="grid">
+      <div class="card" onclick="showModal('closure')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>Closures</h3>
+        <p>Inner function remembering outer scope. Stale closures in hooks are the #1 RN interview trap.</p>
+      </div>
+      <div class="card" onclick="showModal('eventloop')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>Event Loop &amp; Call Stack</h3>
+        <p>How JS executes async code. Macro vs microtasks. Why it matters in RN performance.</p>
+      </div>
+      <div class="card" onclick="showModal('this')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>this Keyword</h3>
+        <p>4 binding rules. Arrow vs regular functions. Lost context in callbacks.</p>
+      </div>
+      <div class="card" onclick="showModal('promises')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>Promises &amp; async/await</h3>
+        <p>States, chaining, Promise.all vs allSettled, race conditions, error handling.</p>
+      </div>
+      <div class="card" onclick="showModal('scope')">
+        <span class="badge badge-core">Core</span>
+        <h3>Scope &amp; Hoisting</h3>
+        <p>var vs let vs const. Temporal dead zone. Function hoisting traps.</p>
+      </div>
+      <div class="card" onclick="showModal('objects')">
+        <span class="badge badge-core">Core</span>
+        <h3>Object Literals &amp; Destructuring</h3>
+        <p>Shorthand, computed keys, spread/rest, shallow copy trap in Redux.</p>
+      </div>
+      <div class="card" onclick="showModal('prototype')">
+        <span class="badge badge-imp">Important</span>
+        <h3>Prototype Chain</h3>
+        <p>How JS objects inherit. __proto__ vs prototype. class as syntactic sugar.</p>
+      </div>
+      <div class="card" onclick="showModal('immutability')">
+        <span class="badge badge-core">Core</span>
+        <h3>Immutability &amp; Pure Functions</h3>
+        <p>Why Redux needs new references. Reference equality. Shallow vs deep copy.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== REACT ===== -->
+  <div class="section" id="tab-react">
+    <div class="grid">
+      <div class="card" onclick="showModal('useeffect')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>useEffect Deep Dive</h3>
+        <p>Deps array rules, cleanup, race conditions, stale closure, when NOT to use it.</p>
+      </div>
+      <div class="card" onclick="showModal('usememocb')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>useMemo vs useCallback</h3>
+        <p>What they memoize. Referential equality trap. When they help vs hurt.</p>
+      </div>
+      <div class="card" onclick="showModal('reconciliation')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>Reconciliation &amp; Keys</h3>
+        <p>How React diffs the tree. Why index-as-key causes bugs.</p>
+      </div>
+      <div class="card" onclick="showModal('context')">
+        <span class="badge badge-core">Core</span>
+        <h3>Context API</h3>
+        <p>Provider re-render problem. Context vs Redux/Zustand. Splitting contexts.</p>
+      </div>
+      <div class="card" onclick="showModal('customhooks')">
+        <span class="badge badge-core">Core</span>
+        <h3>Custom Hooks</h3>
+        <p>Extracting logic, composability, hook rules. Common design question.</p>
+      </div>
+      <div class="card" onclick="showModal('concurrent')">
+        <span class="badge badge-imp">Important</span>
+        <h3>Concurrent React (React 18)</h3>
+        <p>useTransition, useDeferredValue, automatic batching, tearing problem.</p>
+      </div>
+      <div class="card" onclick="showModal('memo')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>React.memo &amp; Re-renders</h3>
+        <p>Shallow comparison. Why props.children breaks memo. Profiler usage.</p>
+      </div>
+      <div class="card" onclick="showModal('errorboundary')">
+        <span class="badge badge-core">Core</span>
+        <h3>Error Boundaries</h3>
+        <p>Catching render errors. getDerivedStateFromError vs componentDidCatch.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== REACT NATIVE ===== -->
+  <div class="section" id="tab-rn">
+    <div class="grid">
+      <div class="card" onclick="showModal('rnarch')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>New Architecture (JSI/Fabric)</h3>
+        <p>Old bridge vs JSI. Fabric renderer. TurboModules. Hermes. Synchronous native.</p>
+      </div>
+      <div class="card" onclick="showModal('flatlist')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>FlatList Optimisation</h3>
+        <p>keyExtractor, getItemLayout, windowSize, removeClippedSubviews, FlashList.</p>
+      </div>
+      <div class="card" onclick="showModal('animation')">
+        <span class="badge badge-core">Core</span>
+        <h3>Animated vs Reanimated 3</h3>
+        <p>JS thread vs UI thread. Worklets. useSharedValue, useAnimatedStyle.</p>
+      </div>
+      <div class="card" onclick="showModal('navigation')">
+        <span class="badge badge-core">Core</span>
+        <h3>React Navigation Internals</h3>
+        <p>Stack vs NativeStack. BackHandler. Deep linking. Stale closure trap.</p>
+      </div>
+      <div class="card" onclick="showModal('hermes')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>Hermes &amp; Debug vs Release</h3>
+        <p>AOT bytecode. Why bugs appear only in release. Timing-driven vs state-driven.</p>
+      </div>
+      <div class="card" onclick="showModal('rnrender')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>RN Rendering Pipeline</h3>
+        <p>JS → Shadow → Main thread. Yoga layout. 16ms frame budget.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TYPESCRIPT ===== -->
+  <div class="section" id="tab-ts">
+    <div class="grid">
+      <div class="card" onclick="showModal('generics')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>Generics</h3>
+        <p>Type parameters. Constraints (extends). Generic hooks and components.</p>
+      </div>
+      <div class="card" onclick="showModal('utility')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>Utility Types</h3>
+        <p>Partial, Pick, Omit, Record, ReturnType. Used constantly in props.</p>
+      </div>
+      <div class="card" onclick="showModal('unions')">
+        <span class="badge badge-core">Core</span>
+        <h3>Union &amp; Intersection Types</h3>
+        <p>Discriminated unions for state machines. Type guards and narrowing.</p>
+      </div>
+      <div class="card" onclick="showModal('mapped')">
+        <span class="badge badge-imp">Important</span>
+        <h3>Mapped &amp; Conditional Types</h3>
+        <p>keyof, typeof, infer. Building dynamic types. Template literal types.</p>
+      </div>
+      <div class="card" onclick="showModal('strict')">
+        <span class="badge badge-core">Core</span>
+        <h3>Strict Mode &amp; Pitfalls</h3>
+        <p>strictNullChecks, type assertion vs guard. as unknown pattern.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RENDERING ===== -->
+  <div class="section" id="tab-render">
+    <div class="grid">
+      <div class="card" onclick="showModal('ssr')">
+        <span class="badge badge-hot">🔥 Most asked</span>
+        <h3>SSR vs CSR vs SSG</h3>
+        <p>When each is used. Hydration. React Server Components. ISR.</p>
+      </div>
+      <div class="card" onclick="showModal('vdom')">
+        <span class="badge badge-core">Core</span>
+        <h3>Virtual DOM &amp; Fibre</h3>
+        <p>Why React uses VDOM. Diff algorithm. Commit vs render phase.</p>
+      </div>
+      <div class="card" onclick="showModal('redux')">
+        <span class="badge badge-core">Core</span>
+        <h3>Redux Selector Optimisation</h3>
+        <p>Reselect, createSelector, normalised state, subscription model.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DSA ROADMAP ===== -->
+  <div class="section" id="tab-dsa">
+    <div class="tip-green">You are starting near-zero on DSA — that is completely fine. Senior frontend/RN interviews ask <strong>pattern-based problems</strong>, not competitive programming tricks. Your goal is to recognise the pattern, not derive algorithms. About 6 weeks of consistent 1-hour daily practice is enough.</div>
+
+    <div class="roadmap">
+      <div class="phase">
+        <h3>Week 1 — Don't code yet. Learn vocabulary.</h3>
+        <div class="week-lbl">Foundation first. Zero LeetCode this week.</div>
+        <ul>
+          <li>What is Big-O? Learn O(1), O(n), O(n²), O(log n) — just recognise the shapes, don't derive</li>
+          <li>Watch "Big O Notation" by CS Dojo on YouTube (~20 min) — very visual, no maths</li>
+          <li>Mental model: "What do I have → What do I need → What does that suggest?"</li>
+          <li>Arrays and hashmaps (objects) — you use these daily, now learn to think about their cost</li>
+        </ul>
+        <div class="tip-amber">⚠️ Do NOT start with hard LeetCode. It will destroy your confidence. The goal week 1 is just vocabulary and mindset.</div>
+      </div>
+
+      <div class="phase">
+        <h3>Week 2 — Arrays &amp; Strings (covers ~40% of frontend DSA)</h3>
+        <div class="week-lbl">3 patterns. That's it. Learn them deeply.</div>
+        <ul>
+          <li><strong>Two pointers</strong> — two indices moving toward each other. Used for: reverse array, find pair with sum, move zeroes</li>
+          <li><strong>Sliding window</strong> — a window that moves across the array. Used for: max sum subarray, longest substring</li>
+          <li><strong>Frequency map</strong> — count with an object/Map. Used for: anagram check, duplicate finding</li>
+        </ul>
+        <div class="code-sm">// Two Sum — frequency map pattern
+function twoSum(nums, target) {
+  const seen = {};
+  for (let i = 0; i &lt; nums.length; i++) {
+    const complement = target - nums[i];
+    if (seen[complement] !== undefined) return [seen[complement], i];
+    seen[nums[i]] = i;
+  }
+}
+// LeetCode to try: #1 Two Sum, #121 Buy/Sell Stock, #242 Valid Anagram</div>
+        <div class="tip-green">💡 When stuck after 20 min: look at the solution, understand WHY it works, close it, write it yourself from scratch. This beats grinding 50 problems you don't understand.</div>
+      </div>
+
+      <div class="phase">
+        <h3>Week 3 — Hashmaps &amp; Sets in Depth</h3>
+        <div class="week-lbl">Most underrated topic. Turns O(n²) into O(n).</div>
+        <ul>
+          <li>Rule of thumb: "I need to look something up fast" OR "I need to count occurrences" → hashmap</li>
+          <li>Set for deduplication and O(1) lookup (vs Array's O(n) includes)</li>
+          <li>One-pass hashmap: store what you've seen so far, check against it as you go</li>
+        </ul>
+        <div class="code-sm">// Contains Duplicate — Set pattern
+function containsDuplicate(nums) {
+  const seen = new Set();
+  for (const n of nums) {
+    if (seen.has(n)) return true;
+    seen.add(n);
+  }
+  return false;
+}
+// LeetCode: #217 Contains Duplicate, #49 Group Anagrams, #128 Longest Consecutive</div>
+      </div>
+
+      <div class="phase">
+        <h3>Week 4 — Stacks &amp; Basic Recursion</h3>
+        <div class="week-lbl">Stacks are everywhere in real code. Recursion feels hard but has one trick.</div>
+        <ul>
+          <li>Stack (LIFO) = array with push/pop. Used for: valid parentheses, undo, parsing, "next greater element"</li>
+          <li>Queue (FIFO) = array with push/shift. Used in BFS later</li>
+          <li>Recursion = function calling itself + base case. Think: "what is the smallest version of this problem?"</li>
+          <li>Always draw the call stack on paper for the first 3 recursive problems — it clicks much faster</li>
+        </ul>
+        <div class="code-sm">// Valid Parentheses — classic stack problem
+function isValid(s) {
+  const stack = [];
+  const map = { ')': '(', '}': '{', ']': '[' };
+  for (const c of s) {
+    if ('({['.includes(c)) { stack.push(c); }
+    else if (stack.pop() !== map[c]) return false;
+  }
+  return stack.length === 0;
+}
+// LeetCode: #20 Valid Parentheses, #155 Min Stack</div>
+        <div class="tip-amber">⚠️ Recursion feels confusing at first — this is completely normal. Trust the base case + return. Don't try to trace the whole call stack in your head; just trust the pattern.</div>
+      </div>
+
+      <div class="phase">
+        <h3>Week 5 — Trees (very common at senior level)</h3>
+        <div class="week-lbl">Trees come up in ~30% of senior frontend interviews. Less scary than they sound.</div>
+        <ul>
+          <li>A tree node is just: { val, left, right }. That's literally it.</li>
+          <li>DFS (depth-first) = go deep before wide. Use recursion naturally.</li>
+          <li>BFS (breadth-first) = go level by level. Use a queue.</li>
+          <li>For frontend context: trees model the DOM, React component tree, file systems</li>
+          <li>The universal tree pattern: base case → recurse left → recurse right → combine</li>
+        </ul>
+        <div class="code-sm">// Max Depth of Binary Tree — universal pattern
+function maxDepth(node) {
+  if (!node) return 0;                     // base case
+  const left = maxDepth(node.left);        // recurse left
+  const right = maxDepth(node.right);      // recurse right
+  return 1 + Math.max(left, right);        // combine
+}
+// LeetCode: #104 Max Depth, #226 Invert Binary Tree, #102 Level Order Traversal</div>
+        <div class="tip-green">💡 When solving tree problems: always ask "what should this function return?" first. Most tree problems are just: do something + recurse left + recurse right.</div>
+      </div>
+
+      <div class="phase">
+        <h3>Week 6 — Sorting, Binary Search &amp; Revision</h3>
+        <div class="week-lbl">Understand patterns, not implementations from scratch.</div>
+        <ul>
+          <li>You don't need to implement sort — Array.sort() is O(n log n). Know WHEN to sort first.</li>
+          <li>Sorting first can turn an O(n²) problem into O(n log n) — very common trick</li>
+          <li>Binary search: "Is it sorted AND I need to find something fast?" → binary search</li>
+          <li>Revision week: redo 10 previously solved problems without looking at notes. The struggle to recall IS the learning.</li>
+        </ul>
+        <div class="code-sm">// Binary Search — the pattern
+function binarySearch(arr, target) {
+  let left = 0, right = arr.length - 1;
+  while (left &lt;= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) return mid;
+    else if (arr[mid] &lt; target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return -1;
+}
+// LeetCode: #704 Binary Search, #33 Search in Rotated Array, #15 3Sum</div>
+      </div>
+
+      <div class="phase">
+        <h3>Daily practice structure (3–4 hrs/day)</h3>
+        <div class="week-lbl">Memory-friendly approach for your study style</div>
+        <ul>
+          <li>30 min — Try to recall yesterday's concept WITHOUT looking at notes first. Write it out. Then check.</li>
+          <li>45 min — Learn today's concept with one example. Understand it, don't memorise it.</li>
+          <li>60 min — Solve 1–2 easy problems. If stuck after 20 min → look at solution, rebuild it yourself.</li>
+          <li>15 min — Write 3 sentences in your OWN words summarising today's learning.</li>
+          <li>Remaining time — if energy exists, try 1 medium problem. If not, stop. Consistency beats intensity.</li>
+        </ul>
+        <div class="tip-green">💡 You WILL forget. That is not failure — that is exactly how memory works. The act of trying to remember before checking is called retrieval practice, and it builds far stronger memory than re-reading. Forgetting + recalling = learning.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SYSTEM DESIGN ===== -->
+  <div class="section" id="tab-sysdesign">
+    <div class="tip-green">Senior frontend/RN system design is NOT "design a distributed database." You'll be asked: Design a news feed. Design a chat feature. Design a multi-step insurance form. Focus is on <strong>client architecture, state management, performance, and API design.</strong></div>
+
+    <div class="roadmap">
+      <div class="phase">
+        <h3>The Framework — same structure every single time</h3>
+        <div class="week-lbl">Learn this framework first. Use it for every practice session.</div>
+        <ul>
+          <li><strong>Step 1 — Clarify (2–3 min):</strong> "Is this mobile or web? What scale? Real-time? Offline support needed?"</li>
+          <li><strong>Step 2 — Data model:</strong> "What are the main entities? What data does each screen need?"</li>
+          <li><strong>Step 3 — API design:</strong> "What endpoints/queries does the client need?"</li>
+          <li><strong>Step 4 — Component architecture:</strong> "How do I structure screens and components?"</li>
+          <li><strong>Step 5 — State management:</strong> "What's global vs local? Which tool and why?"</li>
+          <li><strong>Step 6 — Edge cases:</strong> "Offline? Pagination? Loading/error/empty states?"</li>
+        </ul>
+        <div class="tip-amber">⚠️ Never start designing immediately. Spend 2–3 minutes asking clarifying questions. Interviewers reward this — it signals senior-level thinking.</div>
+      </div>
+
+      <div class="phase">
+        <h3>Core Concepts to Know</h3>
+        <div class="week-lbl">These appear in almost every frontend system design question.</div>
+        <ul>
+          <li><strong>Pagination:</strong> Offset-based (?page=2) = simple but breaks on live data. Cursor-based (?after=id) = stable for real-time feeds.</li>
+          <li><strong>Optimistic UI:</strong> Update UI before API confirms, rollback on failure. Huge UX win for likes, follows, add-to-cart.</li>
+          <li><strong>Caching:</strong> What to cache, where (memory/AsyncStorage/CDN), when to invalidate.</li>
+          <li><strong>WebSocket vs polling:</strong> Chat/live updates → WebSocket. Dashboard refresh → polling is fine.</li>
+          <li><strong>Image handling in RN:</strong> Lazy load, placeholder → thumbnail → full res, react-native-fast-image for caching.</li>
+          <li><strong>Offline support:</strong> Queue actions when offline, sync on reconnect. Critical for mobile health apps.</li>
+          <li><strong>Error states:</strong> Every screen needs: loading, success, error, empty. Design all 4.</li>
+        </ul>
+      </div>
+
+      <div class="phase">
+        <h3>Week 3 — 5 Systems to Practice Designing</h3>
+        <div class="week-lbl">One per day. Time yourself: 30 min each. Draw on paper first.</div>
+        <ul>
+          <li>Social media feed — infinite scroll, like/comment, real-time updates</li>
+          <li>Chat application — real-time messages, read receipts, offline message queue</li>
+          <li>E-commerce listing — filters, search, add-to-cart, optimistic UI</li>
+          <li>Photo upload feature — progress indicator, retry logic, background upload</li>
+          <li>Multi-step insurance form — validation, save draft, submit, error recovery (use your Apollo experience here!)</li>
+        </ul>
+        <div class="tip-green">💡 For each design: draw boxes for screens, arrows for data flow on paper FIRST. Then write bullet points for state structure. You don't need to write code in system design — reasoning and trade-offs are what interviewers want to hear.</div>
+      </div>
+
+      <div class="phase">
+        <h3>How to Talk in a System Design Interview</h3>
+        <div class="week-lbl">Delivery is as important as content at senior level.</div>
+        <ul>
+          <li>Open with: "Before I start designing, let me confirm a few requirements..."</li>
+          <li>Think out loud: "I'm considering X approach because..."</li>
+          <li>Explain trade-offs: "I could use WebSockets or polling here — I'm choosing WebSockets because this is real-time chat where latency matters"</li>
+          <li>Reference real experience: "In the insurance module at Apollo, we solved pagination like this..."</li>
+          <li>Check in mid-design: "Does this approach align with what you're looking for before I continue?"</li>
+        </ul>
+        <div class="tip-green">💡 Your 5 years of production experience at a health-tech company at scale is a MASSIVE advantage. Interviewers respond far better to "I've done this in production" than "I've read about this". Use your real experience constantly.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WHAT'S NEW: RN 0.76–0.82+ ===== -->
+  <div class="section" id="tab-whatsnew">
+    <div class="tip-amber">⚠️ <strong>Why this section exists:</strong> RN changes fast. Interviewers at product companies (Swiggy, Meesho, PhonePe, Razorpay, BrowserStack) increasingly ask about recent versions — especially since 0.76 was a landmark release. Each card below covers what changed, why it matters, and a direct link to the official source.</div>
+
+    <div class="roadmap">
+
+      <!-- 0.76 -->
+      <div class="phase">
+        <h3>🚀 React Native 0.76 — New Architecture ON by default <span style="font-size:11px;color:#888;font-weight:400;">(Oct 2024)</span></h3>
+        <div class="week-lbl">The most significant RN release since the framework was created. This is the one every interviewer will ask about.</div>
+        <ul>
+          <li><strong>New Architecture is now the default</strong> — JSI, Fabric, TurboModules enabled in all new projects. No more opting in.</li>
+          <li><strong>React Native DevTools</strong> — single unified debugging stack (replaces Flipper as default). Zero setup. Opens via Dev Menu or pressing <code>j</code> in CLI. Includes React DevTools built-in.</li>
+          <li><strong>Metro ~15x faster resolver</strong> — warm builds ~4x faster. Cold start significantly improved.</li>
+          <li><strong>New style props</strong> — <code>boxShadow</code> and <code>filter</code> (New Architecture only). Brings RN styling closer to CSS.</li>
+          <li><strong>Android ships as single .aar library</strong> — smaller APK size, faster Android startup.</li>
+          <li><strong>Full React 18 support</strong> — Suspense, useTransition, automatic batching now work correctly in RN via Fabric.</li>
+        </ul>
+        <div class="tip-green">💡 <strong>Interview angle:</strong> "0.76 is the moment the New Architecture graduated from experimental to production-ready default. If you're starting a new project today, you're on the New Architecture automatically. The main impact I care about is that Fabric enables React 18 concurrent features properly, and Metro's resolver improvement makes day-to-day development noticeably faster."</div>
+        <div style="margin-top:10px;font-size:13px;">
+          📖 <a href="https://reactnative.dev/blog/2024/10/23/release-0.76-new-architecture" target="_blank" style="color:#1e40af;">Official 0.76 release blog</a> &nbsp;·&nbsp;
+          <a href="https://reactnative.dev/docs/the-new-architecture/landing-page" target="_blank" style="color:#1e40af;">New Architecture docs</a>
+        </div>
+      </div>
+
+      <!-- 0.77 -->
+      <div class="phase">
+        <h3>🎨 React Native 0.77 — CSS features, Swift default, Metro cleanup <span style="font-size:11px;color:#888;font-weight:400;">(Jan 2025)</span></h3>
+        <div class="week-lbl">Focus on web alignment, better styling, and modernising the iOS template.</div>
+        <ul>
+          <li><strong>New CSS properties</strong> (New Architecture only) — <code>display: contents</code>, <code>boxSizing</code> (content-box / border-box), <code>mixBlendMode</code>, <code>outline*</code> properties. Big step toward web/RN parity.</li>
+          <li><strong>Swift as default iOS template</strong> — new projects use Swift AppDelegate instead of Objective-C. Objective-C still supported but no longer default.</li>
+          <li><strong>Metro log forwarding removed</strong> — console.log no longer streams through Metro terminal. Use React Native DevTools Console panel instead (Chrome DevTools Protocol).</li>
+          <li><strong>Android 15 + 16KB memory page support</strong> — edge-to-edge UI compatibility, improved memory handling on newer Android devices.</li>
+          <li><strong>react-native init deprecation continues</strong> — official guidance is now <code>npx create-expo-app</code> or community CLI.</li>
+          <li><strong>ScrollView sticky headers + absolute positioning fixes</strong> — layout consistency improvements.</li>
+        </ul>
+        <div class="tip-amber">⚠️ <strong>Gotcha to know:</strong> If you upgraded to 0.77 and use Expo Updates for OTA, the :hermes_enabled flag in Podfile is still required even though it looks deprecated. Removing it breaks OTA updates.</div>
+        <div class="tip-green">💡 <strong>Interview angle:</strong> "0.77 shows Meta's clear goal of aligning RN with web CSS. The new styling props — especially boxSizing and display:contents — let you write layout code that's mentally identical to web CSS. The console.log change is a breaking DX change: Metro no longer streams logs, so the team needs to move to React Native DevTools."</div>
+        <div style="margin-top:10px;font-size:13px;">
+          📖 <a href="https://reactnative.dev/blog/2025/01/21/version-0.77" target="_blank" style="color:#1e40af;">Official 0.77 release blog</a>
+        </div>
+      </div>
+
+      <!-- 0.78 -->
+      <div class="phase">
+        <h3>⚛️ React Native 0.78 — React 19 support <span style="font-size:11px;color:#888;font-weight:400;">(Feb 2025)</span></h3>
+        <div class="week-lbl">React 19 lands in React Native. Major new hooks and patterns available.</div>
+        <ul>
+          <li><strong>React 19 fully supported</strong> — the biggest headline. New hooks and patterns available in RN.</li>
+          <li><strong>useActionState</strong> — manage async action state (form submissions, mutations). Replaces manual loading/error useState pairs.</li>
+          <li><strong>useOptimistic</strong> — built-in optimistic UI updates during async requests. No more manual rollback logic.</li>
+          <li><strong>use()</strong> — read Promises or Context directly during render. Suspends until resolved.</li>
+          <li><strong>ref as prop</strong> — pass ref as a regular prop without forwardRef. forwardRef still works but no longer required.</li>
+          <li><strong>propTypes removed</strong> — deprecated APIs from React 18 are gone. Update any libraries still using propTypes.</li>
+          <li><strong>Android XML drawables</strong> — native support for Android vector drawables in the Image component. No extra libraries needed.</li>
+          <li><strong>React Compiler support</strong> — simplified opt-in setup for the React Compiler (auto-memoization).</li>
+        </ul>
+        <div class="tip-green">💡 <strong>Interview angle:</strong> "0.78 brings React 19 to mobile, which means useOptimistic is now available natively — no more writing rollback logic by hand for optimistic UI. useActionState simplifies form mutation patterns significantly. The ref-as-prop change is also worth knowing: forwardRef is no longer needed for passing refs to custom components."</div>
+        <div style="margin-top:10px;font-size:13px;">
+          📖 <a href="https://reactnative.dev/blog/2025/02/19/react-native-0.78" target="_blank" style="color:#1e40af;">Official 0.78 release blog</a> &nbsp;·&nbsp;
+          <a href="https://react.dev/blog/2024/12/05/react-19" target="_blank" style="color:#1e40af;">React 19 full changelog</a>
+        </div>
+      </div>
+
+      <!-- 0.79 -->
+      <div class="phase">
+        <h3>⚡ React Native 0.79 — Metro 0.82, faster Android startup <span style="font-size:11px;color:#888;font-weight:400;">(Apr 2025)</span></h3>
+        <div class="week-lbl">Performance and tooling focused release.</div>
+        <ul>
+          <li><strong>Metro 0.82</strong> — 3x faster cold startup for the bundler. Package exports support finally lands (resolves many third-party library issues).</li>
+          <li><strong>Faster Android app startup</strong> — JS bundle compression skipped on Android, improving cold start time meaningfully.</li>
+          <li><strong>Native module registration changes</strong> — improvements to how native modules are registered for TurboModule compatibility.</li>
+        </ul>
+        <div style="margin-top:10px;font-size:13px;">
+          📖 <a href="https://reactnative.dev/blog/2025/04/09/release-0.79" target="_blank" style="color:#1e40af;">Official 0.79 release blog</a>
+        </div>
+      </div>
+
+      <!-- 0.80+ -->
+      <div class="phase">
+        <h3>🔒 React Native 0.80–0.82 — Legacy Architecture frozen <span style="font-size:11px;color:#888;font-weight:400;">(2025)</span></h3>
+        <div class="week-lbl">The old bridge-based architecture is officially end-of-life.</div>
+        <ul>
+          <li><strong>0.80</strong> — React 19.1 support, JS API changes, Legacy Architecture frozen (no new features, security fixes only).</li>
+          <li><strong>0.82</strong> — Old architecture permanently disabled. <code>newArchEnabled=false</code> no longer works. All apps must be on New Architecture.</li>
+          <li><strong>Reanimated 4 stable</strong> — CSS animations and transitions via Reanimated. Worklets extracted into a standalone package.</li>
+          <li><strong>FlashList rewritten</strong> — Shopify rewrote FlashList from the ground up for better New Architecture compatibility.</li>
+          <li><strong>Legend List 1.0</strong> — new JS-only virtualized list for New Architecture. No native code. Uses synchronous layout APIs.</li>
+          <li><strong>Hermes v1 (0.84)</strong> — first stable major version of Hermes. WebAssembly support added.</li>
+        </ul>
+        <div class="tip-amber">⚠️ <strong>Production reality:</strong> As of 0.82, you cannot fall back to the old bridge. Any third-party library that hasn't migrated to New Architecture will break. Always check library compatibility before upgrading.</div>
+        <div class="tip-green">💡 <strong>Interview angle:</strong> "0.82 is a hard cutoff — the old bridge is gone. This is the most impactful production concern for teams upgrading today. Every native module dependency needs a New Architecture compatible version, or you need to fork and migrate it yourself."</div>
+        <div style="margin-top:10px;font-size:13px;">
+          📖 <a href="https://reactnative.dev/blog/2025/06/12/release-0.80" target="_blank" style="color:#1e40af;">Official 0.80 release blog</a> &nbsp;·&nbsp;
+          <a href="https://github.com/facebook/react-native/releases" target="_blank" style="color:#1e40af;">All releases on GitHub</a>
+        </div>
+      </div>
+
+      <!-- Ecosystem changes -->
+      <div class="phase">
+        <h3>📦 Ecosystem changes worth knowing</h3>
+        <div class="week-lbl">Libraries and tooling that interviewers at product companies now expect you to know about.</div>
+        <ul>
+          <li><strong>Expo is now the recommended way to start</strong> — react-native init is deprecated. <code>npx create-expo-app</code> is the official starting point even for bare workflow projects.</li>
+          <li><strong>React Native DevTools</strong> — replaces Flipper as the default debugger. Built on Chrome DevTools Protocol. No setup required.</li>
+          <li><strong>Reanimated 4</strong> — CSS animations and transitions. Worklets are now a standalone package usable without Reanimated.</li>
+          <li><strong>FlashList v2</strong> — rewritten for New Architecture. Still the recommended replacement for FlatList on large lists.</li>
+          <li><strong>Nitro Modules</strong> — new alternative to TurboModules for native module authoring. Faster, simpler spec. Gaining adoption in 2025.</li>
+          <li><strong>Re.Pack 5.0</strong> — alternative to Metro bundler with Module Federation support. For micro-frontend RN setups.</li>
+          <li><strong>Unistyles 3.0</strong> — styling library built in C++. Surgical style updates, eliminates unnecessary re-renders.</li>
+        </ul>
+      </div>
+
+      <!-- Quick reference links -->
+      <div class="phase">
+        <h3>🔗 Reference links — bookmark these</h3>
+        <div class="week-lbl">Check these closer to your interview date for the absolute latest.</div>
+        <ul>
+          <li>
+            <strong>Official RN blog</strong> (all release posts) →
+            <a href="https://reactnative.dev/blog" target="_blank" style="color:#1e40af;">reactnative.dev/blog</a>
+          </li>
+          <li>
+            <strong>RN GitHub releases</strong> (raw changelogs) →
+            <a href="https://github.com/facebook/react-native/releases" target="_blank" style="color:#1e40af;">github.com/facebook/react-native/releases</a>
+          </li>
+          <li>
+            <strong>Upgrade Helper</strong> (diff between any two versions) →
+            <a href="https://react-native-community.github.io/upgrade-helper/" target="_blank" style="color:#1e40af;">react-native-community.github.io/upgrade-helper</a>
+          </li>
+          <li>
+            <strong>New Architecture migration guide</strong> →
+            <a href="https://reactnative.dev/docs/new-architecture-intro" target="_blank" style="color:#1e40af;">reactnative.dev/docs/new-architecture-intro</a>
+          </li>
+          <li>
+            <strong>React 19 changelog</strong> →
+            <a href="https://react.dev/blog/2024/12/05/react-19" target="_blank" style="color:#1e40af;">react.dev/blog/2024/12/05/react-19</a>
+          </li>
+          <li>
+            <strong>Callstack "RN Wrapped 2025"</strong> (best month-by-month ecosystem summary) →
+            <a href="https://www.callstack.com/blog/react-native-wrapped-2025-a-month-by-month-recap-of-the-year" target="_blank" style="color:#1e40af;">callstack.com/blog/react-native-wrapped-2025</a>
+          </li>
+          <li>
+            <strong>This Week in React</strong> (weekly newsletter, free) →
+            <a href="https://thisweekinreact.com" target="_blank" style="color:#1e40af;">thisweekinreact.com</a>
+          </li>
+          <li>
+            <strong>React Native Radio podcast</strong> (latest RN ecosystem news) →
+            <a href="https://reactnativeradio.com" target="_blank" style="color:#1e40af;">reactnativeradio.com</a>
+          </li>
+        </ul>
+        <div class="tip-green">💡 <strong>Study tip:</strong> You don't need to read every release in detail. 1 week before your interview, skim the last 3 official release blogs (15 min each). Look for: what's new by default, what's deprecated, and what breaking changes exist. That's enough to speak confidently about recent versions.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <!-- ===== MY WORK STORIES ===== -->
+  <div class="section" id="tab-stories">
+    <div class="tip">💡 <strong>How to use these:</strong> Each card is a real feature you built. Click to see the full STAR-T story — Situation, Task, Action, Result, and the technical depth layer for follow-ups. Practice saying each one out loud in ~2 minutes.</div>
+
+    <div class="tip-amber">⚠️ <strong>Delivery tip:</strong> Lead with impact ("Users were seeing X problem..."), own the decision-making ("I chose this approach because..."), and always have one follow-up layer ready ("If they ask why not X, I'll say...").</div>
+
+    <div class="grid">
+      <div class="card" onclick="showModal('story_addons')">
+        <span class="badge badge-hot">🔥 Strong story</span>
+        <h3>AddOns Selection Modal</h3>
+        <p>Stale closure fix, per-member dropdown state, API payload enrichment. Classic React state bug with a clean solution.</p>
+      </div>
+      <div class="card" onclick="showModal('story_backhandler')">
+        <span class="badge badge-hot">🔥 Strong story</span>
+        <h3>MyPolicy Listing — Back Navigation</h3>
+        <p>Exit intent popup across iOS + Android. useRef + useState combo for stale Redux reads. Platform constraints.</p>
+      </div>
+      <div class="card" onclick="showModal('story_premv1')">
+        <span class="badge badge-core">Core</span>
+        <h3>Premium Calculator v1 (Generic)</h3>
+        <p>First-ever premium calculator in the app. Generic inputs: adults, children, sum insured, eldest age. Built from scratch.</p>
+      </div>
+      <div class="card" onclick="showModal('story_premv2')">
+        <span class="badge badge-hot">🔥 Strong story</span>
+        <h3>Premium Calculator v2 (Member-Aware)</h3>
+        <p>Gender-first flow, relationship-based member selection, individual age dropdowns, combination validity. Complex state management.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <div class="phase">
+        <h3>How to connect v1 → v2 in an interview</h3>
+        <div class="week-lbl">Use this framing if asked "tell me about the Premium Calculator"</div>
+        <ul>
+          <li>Lead with: <em>"I actually built two versions of this feature."</em></li>
+          <li>v1 framing: <em>"The first was intentionally minimal — validate the concept quickly with just headcount and sum insured."</em></li>
+          <li>v2 framing: <em>"Once it proved useful, we iterated into a richer member-aware version — gender, relationships, individual ages — much closer to how insurers actually price plans."</em></li>
+          <li>Close with the hard part: <em>"V2 had some interesting state challenges around N dynamic members each with their own dropdown."</em></li>
+        </ul>
+        <div class="tip-green">💡 This shows <strong>product thinking + iteration mindset</strong> — not just coding. Interviewers love hearing that you shipped something simple first and then iterated based on learnings.</div>
+      </div>
+
+      <div class="phase">
+        <h3>General Story Delivery Framework (STAR-T)</h3>
+        <div class="week-lbl">Use this structure for every feature story — keep it to ~2 minutes</div>
+        <ul>
+          <li><strong>S — Situation:</strong> What was the context? What problem existed?</li>
+          <li><strong>T — Task:</strong> What was YOUR specific responsibility?</li>
+          <li><strong>A — Action:</strong> What did you do? (most time here — your decisions and why)</li>
+          <li><strong>R — Result:</strong> What was the outcome?</li>
+          <li><strong>T — Technical depth:</strong> 1-2 sentences on the hardest part — invite them to go deeper</li>
+        </ul>
+        <div class="tip-amber">⚠️ Practice each story out loud at least 3 times before the interview. Reading ≠ remembering. The slight awkwardness of saying it aloud is exactly what builds fluency.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-bg" id="modal-bg" onclick="handleBgClick(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 id="modal-title"></h2>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showModal(id) {
+  var d = TOPICS[id];
+  if (!d) return;
+  document.getElementById('modal-title').textContent = d.title;
+  var html = '';
+  html += '<div class="modal-label">The concept — simply explained</div>';
+  html += '<div class="explain">' + d.explain + '</div>';
+  if (d.code) {
+    html += '<div class="modal-label">Key code pattern</div>';
+    html += '<div class="code">' + escHtml(d.code) + '</div>';
+  }
+  if (d.say) {
+    html += '<div class="modal-label">What to say to the interviewer</div>';
+    html += '<div class="interview-say">' + d.say + '</div>';
+  }
+  if (d.qa && d.qa.length) {
+    html += '<div class="modal-label">Most asked follow-up questions</div>';
+    html += '<div class="qa">';
+    d.qa.forEach(function(q) {
+      html += '<div class="qa-item"><div class="qa-q">Q: ' + q.q + '</div><div class="qa-a">' + q.a + '</div></div>';
+    });
+    html += '</div>';
+  }
+  document.getElementById('modal-body').innerHTML = html;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+}
+
+function handleBgClick(e) {
+  if (e.target === document.getElementById('modal-bg')) closeModal();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+var TOPICS = {
+  closure: {
+    title: 'Closures',
+    explain: 'A closure is when an inner function <strong>remembers the variables from its outer function</strong> even after that outer function has finished running. Think of it as the inner function carrying a backpack of the outer scope wherever it goes.',
+    code: `function makeCounter() {
+  let count = 0;         // outer variable
+  return function() {
+    count++;             // inner fn "closes over" count
+    return count;
+  };
+}
+const counter = makeCounter();
+counter(); // 1
+counter(); // 2  ← count persists because of closure!`,
+    say: '"A closure gives an inner function access to its outer scope even after the outer function has returned. In React hooks, stale closures happen when useEffect or useCallback captures an old value because the dependency array is incomplete. I debugged this exactly in production — our Hermes release build executed faster than debug, exposing a stale closure in our OTP flow where Redux state hadn\'t updated before the function captured it."',
+    qa: [
+      { q: 'What is a stale closure in React?', a: 'When a hook captures a variable at creation time but that variable later updates — the hook still uses the old value. Fix: add the variable to the dependency array, or use useRef to always hold the latest value.' },
+      { q: 'How do closures relate to useCallback?', a: 'useCallback memoizes a function. If you forget a dependency, the memoized function closes over the old (stale) value. Adding all deps fixes staleness but may reduce memoization benefit — there is a trade-off.' },
+      { q: 'Difference between closure and scope?', a: 'Scope is the rule for where variables are accessible. A closure is the mechanism that preserves the outer scope after the parent function has exited.' }
+    ]
+  },
+  eventloop: {
+    title: 'Event Loop & Call Stack',
+    explain: 'JS is single-threaded — one thing at a time. The <strong>call stack</strong> runs synchronous code. When async work completes, its callback waits in a queue. The <strong>event loop</strong> picks from the queue only when the call stack is empty. Microtasks (Promise.then) always run before macrotasks (setTimeout).',
+    code: `console.log('1');
+setTimeout(() => console.log('2'), 0);   // macrotask queue
+Promise.resolve().then(() => console.log('3')); // microtask queue
+console.log('4');
+
+// Output: 1, 4, 3, 2
+// Why? sync first → microtask (Promise) → macrotask (setTimeout)`,
+    say: '"The event loop is how JS handles concurrency despite being single-threaded. Sync code first, then microtasks (Promises), then macrotasks (setTimeout). In RN this matters because heavy sync work on the JS thread blocks the event loop — no touch events, no renders. That\'s why I use InteractionManager.runAfterInteractions() to defer heavy computation until after animations complete."',
+    qa: [
+      { q: 'Difference between microtask and macrotask?', a: 'Microtasks (Promise.then, queueMicrotask) run immediately after the current task, before the browser paints. Macrotasks (setTimeout, setInterval) are scheduled for a future iteration of the event loop.' },
+      { q: 'What blocks the event loop in RN?', a: 'Heavy JS computation, large JSON.parse, synchronous loops over big datasets. These block the JS thread causing frozen touches and dropped frames.' },
+      { q: 'How does async/await relate to the event loop?', a: 'async/await is syntactic sugar over Promises. Everything after an await is queued as a microtask — it yields control to the event loop between awaits.' }
+    ]
+  },
+  this: {
+    title: 'this Keyword',
+    explain: '<strong>this</strong> refers to the object that called the function — determined at <em>call time</em>, not definition time. Arrow functions are the exception: they capture <strong>this</strong> from their surrounding lexical scope at definition time and never have their own.',
+    code: `const obj = {
+  name: 'Bhawana',
+  greet() { console.log(this.name); },         // 'Bhawana'
+  greetArrow: () => console.log(this.name),    // undefined (lexical this)
+};
+const fn = obj.greet;
+fn();          // undefined — context lost!
+fn.call(obj);  // 'Bhawana' — explicit binding`,
+    say: '"this is dynamic in regular functions — it depends on how the function is called, not where it was defined. Arrow functions capture this lexically at definition time. In class components we used to bind handlers in the constructor. With hooks and arrow functions that\'s no longer needed, but understanding this is still important for explaining why certain callback patterns lose context."',
+    qa: [
+      { q: 'What are the 4 rules for this binding?', a: '1) Default: global or undefined in strict mode. 2) Implicit: object before the dot. 3) Explicit: bind/call/apply. 4) new: newly created object. Arrow functions ignore all 4 rules.' },
+      { q: 'How do you fix lost this in a callback?', a: 'Three options: arrow function, .bind(this), or store this in a variable (const self = this) before the callback.' }
+    ]
+  },
+  promises: {
+    title: 'Promises & async/await',
+    explain: 'A Promise has 3 states: <strong>pending → fulfilled or rejected</strong>. async/await makes Promises read like synchronous code. Key parallel patterns: Promise.all (fails fast if any fails), Promise.allSettled (always resolves, reports each result individually), Promise.race (first one wins).',
+    code: `// Promise.all — fails if ANY fail
+const [user, plans] = await Promise.all([fetchUser(), fetchPlans()]);
+
+// Promise.allSettled — never rejects, reports each
+const results = await Promise.allSettled([fetchUser(), fetchPlans()]);
+results.forEach(r => {
+  if (r.status === 'fulfilled') use(r.value);
+  else logError(r.reason);
+});
+
+// Race condition guard in useEffect
+useEffect(() => {
+  let cancelled = false;
+  fetchData(id).then(data => {
+    if (!cancelled) setState(data);
+  });
+  return () => { cancelled = true; };
+}, [id]);`,
+    say: '"I use Promise.allSettled in insurance forms where I\'m fetching multiple independent data sources — rider details, plan config, user eligibility. I don\'t want one failure to kill the whole screen. I always handle rejection — either try/catch with await or .catch() on the chain. Never let unhandled rejections reach production."',
+    qa: [
+      { q: 'Difference between Promise.all and Promise.allSettled?', a: 'Promise.all rejects immediately if any promise rejects — fail-fast. allSettled waits for all to complete and returns status+value/reason for each. Use allSettled when operations are independent.' },
+      { q: 'Can you cancel a Promise?', a: 'Native Promises are not cancellable. Use AbortController with fetch, a cancelled flag in useEffect cleanup, or a library like RxJS Observable.' }
+    ]
+  },
+  scope: {
+    title: 'Scope & Hoisting',
+    explain: '<strong>var</strong> is function-scoped and hoisted (declaration moves to top, initialised as undefined). <strong>let/const</strong> are block-scoped and live in a <strong>temporal dead zone (TDZ)</strong> — accessing before declaration throws ReferenceError. Function declarations are fully hoisted.',
+    code: `console.log(x); // undefined — hoisted var
+var x = 5;
+
+console.log(y); // ReferenceError — TDZ!
+let y = 5;
+
+hello(); // works — function declaration is fully hoisted
+function hello() { console.log('hi'); }
+
+world(); // TypeError — only the var is hoisted, not the value
+var world = function() {};`,
+    say: '"var is function-scoped and hoisted — a classic source of subtle bugs. let and const are block-scoped with a temporal dead zone that prevents use before declaration. I always use const by default, let only when reassignment is needed, and never var. For interviews: the TDZ and the difference between hoisting a function declaration vs a function expression are common gotchas."',
+    qa: [
+      { q: 'What is the temporal dead zone?', a: 'The period between a let/const binding entering scope and being initialised. Accessing it in this zone throws ReferenceError. It exists to prevent using variables before they\'re meaningfully set.' }
+    ]
+  },
+  objects: {
+    title: 'Object Literals & Destructuring',
+    explain: 'Modern JS object syntax includes <strong>shorthand properties</strong>, <strong>computed keys</strong>, and <strong>spread/rest</strong>. Destructuring unpacks values from objects or arrays cleanly. These patterns are everywhere in React props and Redux reducers.',
+    code: `// Shorthand + computed key
+const key = 'name';
+const user = { [key]: 'Bhawana', age: 30 }; // {name:'Bhawana',age:30}
+
+// Destructuring with rename + default
+const { name: fullName = 'Guest', age } = user;
+
+// Rest in destructuring
+const { name, ...rest } = user; // rest = {age:30}
+
+// Spread for immutable update (Redux pattern)
+const updated = { ...user, age: 31 }; // NEW object, new reference`,
+    say: '"I use spread constantly for Redux immutable updates and destructuring for clean component props. The key interview point: spread is shallow — nested objects are still the same references, not copies. For deep nested state I use Redux Toolkit\'s immer integration, or carefully spread at each level."',
+    qa: [
+      { q: 'Difference between rest and spread?', a: 'Same syntax (...), opposite direction. Spread expands an iterable into individual elements. Rest collects multiple elements into one array/object.' },
+      { q: 'Why is spread shallow?', a: 'It only copies one level. Nested objects are still the same references. For deep copy: structuredClone(), JSON.parse(JSON.stringify()), or lodash cloneDeep.' }
+    ]
+  },
+  prototype: {
+    title: 'Prototype Chain',
+    explain: 'Every JS object has a hidden <strong>[[Prototype]]</strong> link to another object. When you access a property, JS walks up this chain until found or until null. Class syntax in JS is syntactic sugar over this prototype mechanism.',
+    code: `function Animal(name) { this.name = name; }
+Animal.prototype.speak = function() { return this.name; };
+
+const dog = new Animal('Rex');
+dog.speak();                     // found on prototype
+dog.hasOwnProperty('name');      // true — own property
+dog.hasOwnProperty('speak');     // false — inherited from prototype
+
+// class is just cleaner syntax for the same thing
+class Cat {
+  constructor(name) { this.name = name; }
+  speak() { return this.name; } // added to Cat.prototype
+}`,
+    say: '"JS uses prototypal inheritance, not classical. class syntax is sugar — under the hood it\'s still prototype chains. class extends sets up Child.prototype.__proto__ === Parent.prototype. Understanding this helps when debugging unexpected property lookups or when working with libraries that extend built-in prototypes."',
+    qa: [
+      { q: 'Difference between __proto__ and prototype?', a: '__proto__ is the actual prototype link on object instances. prototype is a property on constructor functions — it becomes __proto__ of instances created with new.' }
+    ]
+  },
+  immutability: {
+    title: 'Immutability & Pure Functions',
+    explain: 'A <strong>pure function</strong> returns the same output for the same input with no side effects. <strong>Immutability</strong> means not modifying data in place — return a new copy instead. Redux requires this because React detects changes by <strong>reference comparison</strong>, not deep equality.',
+    code: `// WRONG — mutates in place, React misses the change
+state.items.push(newItem);
+
+// CORRECT — returns new reference, React detects the change
+return { ...state, items: [...state.items, newItem] };
+
+// Why references matter:
+const a = [1, 2];
+const b = a;         // same reference
+b === a;             // true — React thinks nothing changed
+const c = [...a];    // new reference
+c === a;             // false — React re-renders`,
+    say: '"Immutability is foundational to React and Redux. React\'s reconciliation uses shallow equality checks — same reference means nothing changed. Mutating in place keeps the same reference so React skips the update. Returning new objects/arrays creates new references that React detects as changes. Redux Toolkit\'s immer lets you write mutating-looking code that actually produces new immutable state."',
+    qa: [
+      { q: 'What is immer in Redux Toolkit?', a: 'immer uses Proxy objects to let you write "mutating" code (state.items.push(x)) inside reducers, but internally produces a new immutable state. Best of both worlds — readable code and correct immutability.' }
+    ]
+  },
+  useeffect: {
+    title: 'useEffect Deep Dive',
+    explain: 'useEffect runs <strong>after</strong> render. The dependency array controls when it re-runs. Always return a cleanup function to prevent leaks. Most bugs: missing deps (stale closure), no cleanup, and using useEffect for things that don\'t need it.',
+    code: `// Safe data fetching with race condition guard
+useEffect(() => {
+  let cancelled = false;
+  fetchData(id).then(data => {
+    if (!cancelled) setState(data);
+  });
+  return () => { cancelled = true; }; // cleanup
+}, [id]);
+
+// When NOT to use useEffect:
+// BAD — transform data for render
+useEffect(() => setFiltered(items.filter(x => x.active)), [items]);
+// GOOD — compute inline
+const filtered = items.filter(x => x.active);
+
+// BAD — respond to user event
+useEffect(() => { if (clicked) doSomething(); }, [clicked]);
+// GOOD — put it in the event handler directly`,
+    say: '"useEffect is for synchronising with external systems — APIs, subscriptions, DOM. The dep array must include every value from component scope the effect uses — missing deps equals stale closure. I always handle race conditions with a cancelled flag or AbortController. And I actively look for effects to eliminate — a lot of junior code puts logic in useEffect that should be computed inline or put directly in an event handler."',
+    qa: [
+      { q: 'What happens if you omit the dependency array?', a: 'Effect runs after every single render — usually causes infinite loops when the effect itself triggers a state update.' },
+      { q: 'Difference between useEffect and useLayoutEffect?', a: 'useLayoutEffect fires synchronously after DOM mutations but before the browser paints — use it to avoid flicker when measuring/modifying DOM layout. useEffect fires after paint.' }
+    ]
+  },
+  usememocb: {
+    title: 'useMemo vs useCallback',
+    explain: '<strong>useCallback</strong> memoizes a <strong>function reference</strong>. <strong>useMemo</strong> memoizes a <strong>computed value</strong>. Both give referential stability across renders. The trap: over-using them adds complexity — use only when there is a measurable benefit.',
+    code: `// useCallback — stable function reference
+const handlePress = useCallback(() => {
+  doSomething(id);
+}, [id]); // new function only when id changes
+
+// useMemo — cached computation
+const sortedList = useMemo(() => {
+  return [...items].sort(compareFn);
+}, [items]); // only re-sorts when items changes
+
+// They are the same thing under the hood:
+// useCallback(fn, deps) === useMemo(() => fn, deps)`,
+    say: '"These are about referential stability, not just performance. useCallback prevents a React.memo-wrapped child from re-rendering because it received a new function reference on every parent render. useMemo is for genuinely expensive computations. I use both selectively — only when a value or function goes to a memoized child or is a dependency of another hook. Over-using them adds complexity without benefit."',
+    qa: [
+      { q: 'When does useCallback actually help?', a: 'When the function is passed as a prop to a React.memo child, or is a dependency of another useEffect/useMemo. Without useCallback, the child re-renders every time even if nothing changed.' },
+      { q: 'Can useMemo replace useState?', a: 'No. useMemo computes derived data — it is not a source of truth and does not trigger re-renders on its own.' }
+    ]
+  },
+  reconciliation: {
+    title: 'Reconciliation & Keys',
+    explain: 'React compares old vs new virtual DOM trees to find the minimum set of changes. Heuristic: same element type → update props. Different type → unmount and remount. <strong>Keys</strong> help React track which list item is which across re-renders.',
+    code: `// BAD — index as key causes stale state on reorder/delete
+{items.map((item, i) => <Item key={i} {...item} />)}
+
+// GOOD — stable unique ID
+{items.map(item => <Item key={item.id} {...item} />)}
+
+// Why it breaks: if you delete item at index 0,
+// all items shift down, keys stay 0/1/2/3,
+// React reuses wrong component instances → stale state
+
+// Deliberate reset trick — force full remount:
+<UserForm key={userId} userId={userId} />`,
+    say: '"React\'s reconciler (Fibre) diffs element trees using heuristics. Keys tell React which list item is which. Using index as key is a classic bug — when items reorder or are deleted, keys don\'t follow the items, so React reuses wrong component instances and you get stale state. I also use the key trick deliberately to force a component to fully reset when I need clean state."',
+    qa: [
+      { q: 'What is the Fibre reconciler?', a: 'Fibre is React\'s internal renderer that makes rendering interruptible. It breaks work into small units that can be paused and resumed, enabling concurrent features like useTransition.' },
+      { q: 'When would you intentionally change a key?', a: 'When you want to force a full unmount+remount — like resetting a form when the user ID changes. Changing the key tells React to discard the old instance completely.' }
+    ]
+  },
+  context: {
+    title: 'Context API',
+    explain: 'Context shares values through the component tree without prop drilling. The core pitfall: <strong>every consumer re-renders when the context value reference changes</strong>, even if the part they use did not change.',
+    code: `// Split contexts to minimise re-renders
+const UserContext = createContext(null);     // changes rarely
+const ThemeContext = createContext('light'); // independent
+
+// Memoize the value to prevent re-render on every parent render
+const value = useMemo(() => ({ user, updateUser }), [user]);
+return (
+  <UserContext.Provider value={value}>
+    {children}
+  </UserContext.Provider>
+);`,
+    say: '"Context is great for global state that rarely updates — auth, theme, locale. The problem is any context value change re-renders ALL consumers. For frequently updating state like filter selections or animation values, I prefer Redux with selectors or Zustand — they give subscription-level granularity where components only re-render when their specific slice changes."',
+    qa: [
+      { q: 'How do you prevent Context from causing unnecessary re-renders?', a: '1) Split into multiple smaller contexts. 2) Memoize the value with useMemo. 3) Use a state management library with selectors like Zustand or Redux+Reselect.' }
+    ]
+  },
+  customhooks: {
+    title: 'Custom Hooks',
+    explain: 'Custom hooks extract stateful logic into reusable functions. They must start with "use", can call other hooks, and follow all hook rules. Each component using a custom hook gets <strong>completely isolated state</strong> — hooks share logic, not state.',
+    code: `function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler); // always clean up!
+  }, [value, delay]);
+  return debouncedValue;
+}
+
+// Usage — API call fires 300ms after user stops typing
+const searchQuery = useDebounce(inputValue, 300);
+useEffect(() => { fetchResults(searchQuery); }, [searchQuery]);`,
+    say: '"Custom hooks are how I share logic, not UI. When I see the same useState+useEffect pattern in multiple components, that\'s a signal to extract a custom hook. They\'re composable — useFetchPlan might internally use useAsync which uses useReducer. Keeping the "use" prefix matters: it enables the eslint-plugin-react-hooks to enforce hook rules correctly."',
+    qa: [
+      { q: 'Do two components using the same custom hook share state?', a: 'No. Each call to a custom hook creates completely separate, isolated state. Hooks share logic not instances — like how two useState() calls each get their own state.' }
+    ]
+  },
+  concurrent: {
+    title: 'Concurrent React (React 18)',
+    explain: 'React 18 can pause, abandon, and resume renders. <strong>useTransition</strong> marks state updates as non-urgent — typing stays responsive while heavy renders are deferred. <strong>Automatic batching</strong> groups multiple setStates from async code into one render.',
+    code: `const [isPending, startTransition] = useTransition();
+
+function handleSearch(query) {
+  setInputValue(query);          // urgent — updates input immediately
+  startTransition(() => {
+    setResults(filterItems(query)); // non-urgent — can be interrupted
+  });
+}
+// isPending = true while transition is in progress
+// → show a loading indicator without blocking the input
+
+// Automatic batching (React 18):
+setTimeout(() => {
+  setCount(c => c + 1);
+  setFlag(f => !f);
+  // Only ONE re-render in React 18, not two
+}, 1000);`,
+    say: '"Concurrent React is about keeping the UI responsive under load. startTransition tells React "this update is not urgent — prioritise input response over this heavy render." useDeferredValue is similar but applied to a value rather than a setter. Automatic batching means multiple setStates in async code are now batched like synchronous code — fewer wasted renders."',
+    qa: [
+      { q: 'What is the tearing problem?', a: 'If an external store is not React-aware, concurrent rendering might show the same component reading different versions of the same data simultaneously. useSyncExternalStore solves this for external stores.' }
+    ]
+  },
+  memo: {
+    title: 'React.memo & Re-renders',
+    explain: '<strong>React.memo</strong> wraps a component and skips re-rendering if props have not changed (shallow comparison). The trap: if parent passes new object or function references on every render, memo sees them as "changed" every time and is useless.',
+    code: `// Without prop stabilisation, memo does nothing:
+function Parent() {
+  const config = { theme: 'dark' }; // NEW object every render!
+  return <MemoChild config={config} />; // always re-renders
+}
+
+// With useMemo — stable reference:
+function Parent() {
+  const config = useMemo(() => ({ theme: 'dark' }), []);
+  return <MemoChild config={config} />; // skipped if config unchanged
+}
+
+const MemoChild = React.memo(({ config }) => {
+  return <div>{config.theme}</div>;
+});`,
+    say: '"React.memo uses shallow prop comparison. It only works when paired with stable references — useMemo for objects, useCallback for functions. I use React DevTools Profiler to check which components are actually re-rendering and why before adding memo. The most impactful wins are usually memoizing list items in large FlatLists and heavy child components that receive complex but stable props."',
+    qa: [
+      { q: 'How do you know if memoization is actually helping?', a: 'React DevTools Profiler → enable "Record why each component rendered". It shows which components re-rendered and the exact reason: props changed, parent rendered, context changed.' }
+    ]
+  },
+  errorboundary: {
+    title: 'Error Boundaries',
+    explain: 'Error boundaries catch JS errors in their child tree and show a fallback UI instead of crashing the app. They only work for render errors — not async errors, not event handler errors. Still class-only in React — no hooks equivalent yet.',
+    code: `class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true }; // triggers fallback render
+  }
+
+  componentDidCatch(error, info) {
+    Sentry.captureException(error, { extra: info }); // log it
+  }
+
+  render() {
+    if (this.state.hasError) return <FallbackUI />;
+    return this.props.children;
+  }
+}
+
+// Usage:
+<ErrorBoundary>
+  <InsurancePlanScreen />
+</ErrorBoundary>`,
+    say: '"Error boundaries are the last line of defence for render errors. They do NOT catch async errors, event handler errors, or errors in the boundary itself — those still need try/catch. In production RN apps I wrap critical sections with error boundaries and log to Sentry for tracking. The key methods are getDerivedStateFromError (to trigger fallback UI) and componentDidCatch (to log the error)."',
+    qa: [
+      { q: 'What errors do Error Boundaries NOT catch?', a: 'Event handlers, async code (setTimeout/fetch), server-side rendering, and errors thrown inside the error boundary itself. For those you still need try/catch.' }
+    ]
+  },
+  rnarch: {
+    title: 'New Architecture: JSI / Fabric / TurboModules',
+    explain: '<strong>Old:</strong> JS ↔ async JSON bridge ↔ Native. Everything serialised. <strong>New:</strong> JS ↔ JSI (synchronous, no serialisation) ↔ Native. Fabric = new concurrent renderer. TurboModules = lazily loaded native modules. Hermes = AOT bytecode compilation.',
+    code: `// Old bridge — async, JSON serialised round-trip
+NativeModules.MyModule.doThing(data, (result) => {
+  // callback arrives after bridge round-trip delay
+});
+
+// TurboModule via JSI — can be synchronous
+import MyModule from 'MyTurboModule';
+const result = MyModule.doThing(data); // direct C++ call!
+
+// Hermes: compiles JS → bytecode at BUILD time
+// No JIT parse on device → faster startup, lower memory
+// Release mode executes MUCH faster than debug mode`,
+    say: '"The New Architecture eliminates the bridge bottleneck. JSI lets JS hold a direct C++ reference to native objects and call methods synchronously — no serialisation, no async queue. Fabric makes the renderer concurrent-capable so React 18 features like startTransition actually work properly. TurboModules improve startup because native modules load lazily. Hermes reduces TTI because bytecode is pre-compiled at build time."',
+    qa: [
+      { q: 'Why was the old bridge slow?', a: 'All cross-thread communication was async JSON serialisation. Large data like typed arrays and images were especially slow. And it was fundamentally async — you could not get a synchronous result from native.' },
+      { q: 'What is codegen in New Architecture?', a: 'You define native module interfaces in TypeScript. RN\'s codegen auto-generates type-safe native bindings (Objective-C / Java / Kotlin) from this spec, catching type mismatches at build time instead of runtime.' }
+    ]
+  },
+  flatlist: {
+    title: 'FlatList Optimisation',
+    explain: 'FlatList renders only items near the visible window (virtualisation). Key optimisations: <strong>keyExtractor</strong> for stable identity, <strong>getItemLayout</strong> to skip measurement, <strong>windowSize</strong> controls the render buffer. FlashList recycles component instances instead of unmounting/remounting.',
+    code: `<FlatList
+  data={items}
+  keyExtractor={item => item.id}  // stable identity
+  getItemLayout={(_, index) => ({
+    length: ITEM_HEIGHT,
+    offset: ITEM_HEIGHT * index,
+    index,
+  })}
+  windowSize={5}            // render 2.5 screens above + below
+  removeClippedSubviews     // detach offscreen views (Android)
+  maxToRenderPerBatch={10}
+  initialNumToRender={10}
+  renderItem={({ item }) => <MemoizedItem item={item} />}
+/>`,
+    say: '"The most impactful FlatList optimisations: getItemLayout to skip dynamic measurement — critical for scrollToIndex correctness, memoizing renderItem to prevent unnecessary re-renders, and tuning windowSize for the content density. For very large or complex lists I switch to FlashList from Shopify, which recycles component instances instead of unmounting/remounting them — much better for long homogeneous lists."',
+    qa: [
+      { q: 'Why is getItemLayout important?', a: 'Without it, FlatList must measure every item before enabling scrollToIndex or maintaining scroll position correctly. Declaring sizes statically makes offset calculations instant.' },
+      { q: 'Difference between FlatList and FlashList?', a: 'FlashList recycles existing React component instances (like web virtual scroll) instead of unmounting/remounting. Much faster for large lists. API is intentionally similar to FlatList for easy migration.' }
+    ]
+  },
+  animation: {
+    title: 'Animated API vs Reanimated 3',
+    explain: '<strong>Animated API</strong>: driven from JS thread — heavy JS work causes animation jank. <strong>Reanimated 3</strong>: animations run on the <strong>UI thread</strong> via worklets serialised through JSI. Stays smooth even when JS is busy.',
+    code: `import {
+  useSharedValue, useAnimatedStyle, withSpring
+} from 'react-native-reanimated';
+
+const offset = useSharedValue(0); // lives on UI thread
+const animatedStyle = useAnimatedStyle(() => ({
+  transform: [{ translateX: offset.value }],
+})); // this worklet runs on UI thread — no bridge!
+
+// Trigger from JS — animation stays smooth regardless
+offset.value = withSpring(100);
+
+// Old Animated API — fine for simple cases
+const opacity = useRef(new Animated.Value(1)).current;
+Animated.timing(opacity, { toValue: 0, useNativeDriver: true }).start();`,
+    say: '"Animated API is fine for simple fades and transforms that use useNativeDriver. But for gesture-driven animations or complex sequences, Reanimated 3 is the right tool — worklets run on the UI thread via JSI so they are completely independent of the JS thread. If JS is busy doing a Redux update, Reanimated animations stay smooth at 60fps."',
+    qa: [
+      { q: 'What is a worklet?', a: 'A JS function marked with the "worklet" directive that Reanimated serialises and runs on the UI thread via JSI. It has access to shared values but cannot access the JS heap.' },
+      { q: 'What is useNativeDriver in Animated?', a: 'Offloads specific animation properties (opacity, transform) to the native animation system. Only works with a subset of properties — cannot animate width, height, margin, or backgroundColor with native driver.' }
+    ]
+  },
+  navigation: {
+    title: 'React Navigation Internals',
+    explain: 'React Navigation manages navigation state in JS — giving cross-platform consistency. Stack navigator pushes/pops React component screens. Native Stack uses platform native APIs (UINavigationController/Fragment) for better performance. BackHandler manages the Android hardware back button.',
+    code: `// BackHandler with proper cleanup — stale closure trap!
+useEffect(() => {
+  const handler = BackHandler.addEventListener(
+    'hardwareBackPress',
+    () => {
+      if (canGoBack) {
+        navigate('Back');
+        return true;   // true = intercept the back press
+      }
+      return false;    // let default handle it
+    }
+  );
+  return () => handler.remove(); // ALWAYS clean up!
+}, [canGoBack]); // include ALL deps to avoid stale closure`,
+    say: '"React Navigation stores state as a JS object, which gives cross-platform consistency but means deep coupling to the JS thread. For performance-critical flows I use native-stack which uses UINavigationController on iOS and Fragment on Android. BackHandler on Android requires careful cleanup — forgetting handler.remove() in the effect cleanup is a classic stale closure bug I\'ve had to debug."',
+    qa: [
+      { q: 'Difference between Stack and NativeStack?', a: 'Stack renders all screens as React components in JS. NativeStack uses native navigation APIs, giving native animations and gestures at the cost of less customisation.' },
+      { q: 'How do you handle deep linking?', a: 'Configure the linking prop on NavigationContainer with path mappings. Handle cold start with Linking.getInitialURL() and subsequent opens with Linking.addEventListener.' }
+    ]
+  },
+  hermes: {
+    title: 'Hermes & Debug vs Release Differences',
+    explain: 'Hermes compiles JS to <strong>bytecode at build time (AOT)</strong>. In release: fast execution. In debug: slower interpreter. This timing gap exposes race conditions and stale closures that only appear in release builds.',
+    code: `// BUG — works in debug, fails in release
+// Hermes release executes Redux dispatch BEFORE state updates
+setTimeout(() => {
+  const user = store.getState().user;
+  if (user) navigate('Home'); // timing assumption — fragile!
+}, 0);
+
+// FIX — react to state change, not timing
+useEffect(() => {
+  if (isAuthenticated) navigate('Home');
+}, [isAuthenticated]); // state-driven, always correct
+
+// Also: Hermes is default since RN 0.70
+// Benefits: faster TTI, lower memory, AOT parse`,
+    say: '"Hermes compiles to bytecode at build time — no JIT on device — so startup is faster and memory is lower. The critical lesson from production debugging: Hermes in release mode executes significantly faster than debug mode. Any code relying on timing assumptions — Redux dispatch order, OTP flows, debounce thresholds — can behave differently. The fix is always: drive logic from state changes, never from timers."',
+    qa: [
+      { q: 'What is AOT compilation in Hermes?', a: 'Hermes compiles JavaScript to bytecode during the build step, not at runtime. This eliminates parse and compile time on device, reducing TTI (time to interactive) significantly.' }
+    ]
+  },
+  rnrender: {
+    title: 'RN Rendering Pipeline',
+    explain: 'Three threads: <strong>JS thread</strong> (React, app logic), <strong>Shadow thread</strong> (Yoga layout calculations), <strong>Main/UI thread</strong> (actual native rendering). Frame budget is ~16ms for 60fps. With Fabric, the shadow tree is synchronous with the JS thread.',
+    code: `// If JS thread is blocked → frozen touches, dropped frames
+// Animations using Reanimated worklets still run on UI thread
+
+// Defer heavy JS work until after interactions:
+InteractionManager.runAfterInteractions(() => {
+  // runs after navigation animation completes
+  const result = heavyComputation(largeDataset);
+  setState(result);
+});
+
+// Identify bottlenecks:
+// - React DevTools Profiler (which component takes longest)
+// - RN Performance Monitor (JS/UI frame drops)
+// - Systrace / Flipper (thread-level breakdown)`,
+    say: '"RN\'s threading model means Reanimated animations run on the main thread independently of JS. If JS is blocked, touch events freeze but worklet animations stay smooth. The 16ms frame budget means every JS render cycle must complete quickly. I use InteractionManager to defer heavy work until after navigation transitions complete, and Flipper to identify which thread is the bottleneck."',
+    qa: [
+      { q: 'What causes dropped frames in RN?', a: 'Heavy JS computation blocking the JS thread, large component trees re-rendering synchronously, or the main thread busy with complex layout. Profiling tools: React DevTools Profiler, RN Performance Monitor, Systrace, Flipper.' }
+    ]
+  },
+  generics: {
+    title: 'TypeScript Generics',
+    explain: 'Generics let you write reusable typed code. <strong>T</strong> is a type parameter — a placeholder that gets filled in when the function/component is used. Constraints with <strong>extends</strong> limit what T can be.',
+    code: `// Generic function
+function getFirst<T>(arr: T[]): T | undefined {
+  return arr[0];
+}
+getFirst([1, 2, 3]);    // T inferred as number
+getFirst(['a', 'b']);   // T inferred as string
+
+// Generic with constraint
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key]; // type-safe property access
+}
+
+// Generic hook — use in your insurance work!
+function useAsync<T>(fn: () => Promise<T>) {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState(false);
+  // ...
+  return { data, loading };
+}`,
+    say: '"I use generics in custom hooks — useAsync<T> returns { data: T | null, loading, error } — and in API response wrappers. Constraints are key: T extends { id: string } ensures I can safely access .id. In practice generics reduce type duplication massively — one generic useList<T> instead of separate useUserList, usePlanList, useRiderList."',
+    qa: [
+      { q: 'Difference between T extends object and T extends {}?', a: 'T extends {} allows any non-nullish type including primitives. T extends object requires T to be an actual object type — no string, number, boolean. {} is broader.' },
+      { q: 'When would you use a default generic?', a: 'When there is a sensible default type: function createState<T = string>(). Callers who do not specify T automatically get string.' }
+    ]
+  },
+  utility: {
+    title: 'TypeScript Utility Types',
+    explain: 'TypeScript includes built-in generic types that transform other types. These are used constantly in component props and API response types.',
+    code: `interface User { id: number; name: string; email: string; }
+
+type PartialUser = Partial<User>;              // all optional
+type Preview    = Pick<User, 'id' | 'name'>;  // subset of fields
+type Update     = Omit<User, 'id'>;           // minus a field
+type UserMap    = Record<string, User>;        // key → value map
+
+// From functions:
+type Params  = Parameters<typeof myFn>;       // param tuple
+type Result  = ReturnType<typeof myFn>;       // return type
+
+// Common real-world pattern:
+// Required ID + all other fields optional (for update payloads)
+type UpdatePayload = Required<Pick<User,'id'>> & Partial<Omit<User,'id'>>;`,
+    say: '"I use utility types constantly to avoid type duplication. Partial for update payloads where only some fields change. Pick/Omit to derive component prop types from data models without re-declaring them. ReturnType to type hook return values without repeating the shape. These are the difference between a typed codebase and a truly type-safe one."',
+    qa: [
+      { q: 'Difference between Partial<T> and optional chaining (?.)?', a: 'Partial is a compile-time type transformation — makes all properties optional in a new type. Optional chaining is runtime syntax for safe property access. They solve the same problem at different layers.' }
+    ]
+  },
+  unions: {
+    title: 'Union & Intersection Types',
+    explain: '<strong>Union (A | B)</strong>: value is one of the types. <strong>Intersection (A & B)</strong>: value must satisfy all types. <strong>Discriminated unions</strong> use a literal type field (like "status") to enable safe narrowing inside switch/if blocks.',
+    code: `// Discriminated union — perfect for async state machines
+type AsyncState<T> =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success'; data: T }
+  | { status: 'error'; error: string };
+
+function render<T>(state: AsyncState<T>) {
+  switch (state.status) {
+    case 'success': return state.data;   // TS knows data exists here
+    case 'error':   return state.error;  // TS knows error exists here
+    case 'loading': return null;
+  }
+}
+
+// Intersection — combine types
+type AdminUser = User & { adminLevel: number };`,
+    say: '"Discriminated unions are one of my favourite TypeScript patterns. I use them for async state machines — idle/loading/success/error — which every data-fetching component needs. The discriminant field (usually status or type) lets TypeScript narrow safely inside each branch, giving full type-safety without any type assertions."',
+    qa: [
+      { q: 'What is a type guard?', a: 'A function that narrows a type at runtime. Examples: typeof x === "string", instanceof checks, or a custom guard: function isUser(x: unknown): x is User { return typeof x === "object" && x !== null && "name" in x; }' }
+    ]
+  },
+  mapped: {
+    title: 'Mapped & Conditional Types',
+    explain: '<strong>Mapped types</strong> transform every property in a type. <strong>Conditional types</strong> are type-level if/else. The <strong>infer</strong> keyword extracts a type from within a conditional.',
+    code: `// Mapped type — this is how Readonly<T> is built internally
+type MyReadonly<T> = { readonly [K in keyof T]: T[K] };
+
+// Conditional type
+type IsArray<T> = T extends any[] ? true : false;
+type A = IsArray<string[]>; // true
+type B = IsArray<string>;   // false
+
+// infer — extract the return type (how ReturnType<T> works)
+type MyReturnType<T> =
+  T extends (...args: any[]) => infer R ? R : never;
+
+// Template literal types (TS 4.1+)
+type EventName = 'click' | 'focus';
+type Handler = \`on\${Capitalize<EventName>}\`; // 'onClick' | 'onFocus'`,
+    say: '"Mapped types are how all the utility types like Partial and Readonly are built under the hood. Conditional types with infer are advanced but powerful — ReturnType and Parameters are just conditional types. I use them for building type-safe event systems and dynamic API response typing in our insurance platform."',
+    qa: [
+      { q: 'What does keyof do?', a: 'keyof T produces a union of all key names of T as string/number literal types. keyof User = "id" | "name" | "email".' }
+    ]
+  },
+  strict: {
+    title: 'TypeScript Strict Mode & Pitfalls',
+    explain: '<strong>strict: true</strong> enables a bundle of checks — most importantly <strong>strictNullChecks</strong>, which means null and undefined are not assignable to other types and must be handled explicitly.',
+    code: `// Without strictNullChecks — dangerous
+let name: string = null; // silently allowed — runtime crash later!
+
+// With strictNullChecks — safe
+let name: string | null = null;
+name.toUpperCase();   // Error: Object is possibly null
+name?.toUpperCase();  // Safe — optional chaining
+
+// Type assertion — use sparingly
+const el = document.getElementById('root') as HTMLElement;
+
+// Better: narrow first, then TypeScript knows it's safe
+const el = document.getElementById('root');
+if (!el) throw new Error('root element missing');
+el.style.display = 'block'; // TS knows not null here`,
+    say: '"I always enable strict: true. strictNullChecks alone catches a huge class of runtime errors at compile time. I avoid "as" assertions — they\'re a signal I haven\'t modelled the types correctly upstream. The only time I use as is for DOM queries where TS cannot know the element type, but even then I prefer narrowing with a null check first."',
+    qa: [
+      { q: 'Difference between "as" and a type guard?', a: '"as" is a compile-time assertion — you override TS\'s inference with no runtime check. A type guard is checked at runtime and narrows the type based on actual value. Prefer type guards; use "as" only when you are certain TS is wrong.' }
+    ]
+  },
+  ssr: {
+    title: 'SSR vs CSR vs SSG',
+    explain: '<strong>CSR</strong>: browser renders entirely — slow first paint, fast navigation. <strong>SSR</strong>: server renders HTML per request — fast first paint, SEO-friendly. <strong>SSG</strong>: HTML at build time — fastest but not dynamic per request. <strong>ISR</strong>: static + revalidation on a timer. <strong>RSC</strong>: React Server Components run on server, send zero JS.',
+    code: `// Next.js App Router — React Server Component
+// Runs ONLY on server. Zero JS sent to client. Can be async.
+async function InsurancePage({ params }) {
+  const plan = await db.getPlan(params.id); // direct DB access!
+  return <PlanDetails plan={plan} />;       // no useEffect needed
+}
+
+// Client component — for interactivity
+'use client';
+function PlanSelector() {
+  const [selected, setSelected] = useState(null);
+  return <button onClick={() => setSelected(id)}>Select</button>;
+}`,
+    say: '"For the insurance SSR work I do, the key decision is: does this page need per-user data at request time? If yes, SSR. If data is the same for all users and changes rarely, SSG or ISR. React Server Components blur the line — they run on the server, can access DB directly, and send zero JS to the client. Client components handle interactivity. The main cost to understand is hydration."',
+    qa: [
+      { q: 'What is hydration?', a: 'After SSR, the browser receives HTML then downloads JS. Hydration is React attaching event listeners to the server-rendered HTML to make it interactive. Mismatch between server and client output causes hydration errors.' },
+      { q: 'What are React Server Components?', a: 'Components that run only on the server. Can be async, access databases, import Node.js packages, and send zero JS to the client. They cannot use useState, useEffect, or browser APIs.' }
+    ]
+  },
+  vdom: {
+    title: 'Virtual DOM & Fibre Reconciler',
+    explain: 'The Virtual DOM is a lightweight JS object tree representing the real DOM. React builds a new VDOM on each render, diffs against the previous (reconciliation), and applies only the minimal changes to the real DOM. Fibre makes this rendering interruptible.',
+    code: `// Conceptual VDOM representation:
+{
+  type: 'div',
+  props: { className: 'card' },
+  children: [
+    { type: 'h2', props: {}, children: ['Plan Details'] },
+    { type: InsuranceBadge, props: { active: true }, children: [] }
+  ]
+}
+// Diffing: compare old tree vs new tree
+// Result: minimum set of real DOM operations
+// Fibre: this diffing work is now interruptible
+//        React can pause mid-render for urgent updates`,
+    say: '"The Virtual DOM is a trade-off — diffing has cost, but batching updates and computing minimal DOM mutations is far cheaper than re-rendering everything. With Fibre, rendering is interruptible — React can pause mid-render to handle urgent updates like user input. This is the foundation for all concurrent features in React 18."',
+    qa: [
+      { q: 'Does React Native use the Virtual DOM?', a: 'Same reconciler concept but maps to native view components instead of DOM nodes. The Shadow Tree (managed by Yoga layout engine) computes layout before native views are created or updated.' }
+    ]
+  },
+  redux: {
+    title: 'Redux Selector Optimisation',
+    explain: '<strong>useSelector</strong> subscribes to the Redux store and re-runs on every dispatch. If it returns a new reference each time (even to equivalent data), the component re-renders unnecessarily. <strong>createSelector</strong> from Reselect memoizes the computation.',
+    code: `import { createSelector } from '@reduxjs/toolkit';
+
+// BAD — new array reference on every dispatch
+const badSelector = state => state.plans.filter(p => p.active);
+
+// GOOD — memoized, same reference when input unchanged
+const selectActivePlans = createSelector(
+  state => state.plans,           // input selector
+  plans => plans.filter(p => p.active) // memoized result
+);
+
+// For normalised state with entity adapter:
+const plansAdapter = createEntityAdapter();
+const selectors = plansAdapter.getSelectors(state => state.plans);
+// Auto-generates: selectAll, selectById, selectTotal, etc.`,
+    say: '"useSelector re-runs on every single dispatch. If it returns derived data like filtered arrays or transformed objects, it creates new references each time, causing unnecessary re-renders. createSelector memoizes the computation — same inputs return the same reference. For normalised state I use Redux Toolkit\'s entity adapter which provides optimised selectors automatically."',
+    qa: [
+      { q: 'What is normalised state?', a: 'Storing entities by ID in a flat map: { ids: ["1","2"], entities: {"1":{...}, "2":{...}} }. Updates are O(1), avoids deep spread chains, enables efficient byId lookups. createEntityAdapter automates this.' }
+    ]
+  },
+  story_addons: {
+    title: 'AddOns Selection Modal — Stale Closure Fix',
+    explain: '<strong>S:</strong> The insurance product had a rider selection modal where users picked add-ons for different family members.<br><br><strong>T:</strong> I owned the full component — dropdown behaviour, member-wise selection, and API payload building.<br><br><strong>A:</strong> Debugged a stale closure where <code>handleMemberSelection</code> captured <code>currentRiderForEdit</code> as <code>null</code> at modal mount time. Instead of patching reactively, I restructured state — introduced a separate <code>isMultiSelectRider</code> boolean so the handler didn\'t depend on stale modal state. Also fixed per-member independent dropdown control by replacing a shared boolean with an <code>openDropdownKey</code> string. Fixed SCSS for dropdown positioning (upward-opening for last items, full-width alignment, chevron centering).<br><br><strong>R:</strong> Dropdowns worked correctly per member with no stale reads. API payload was enriched accurately.',
+    code: `// PROBLEM: stale closure — currentRiderForEdit was null at mount
+const handleMemberSelection = useCallback((member) => {
+  // currentRiderForEdit captured as null at mount ❌
+  if (currentRiderForEdit?.isMultiSelect) { ... }
+}, []);
+
+// FIX: decouple from stale modal state with dedicated boolean
+const [isMultiSelectRider, setIsMultiSelectRider] = useState(false);
+
+const handleMemberSelection = useCallback((member) => {
+  if (isMultiSelectRider) { ... } // stable boolean state ✅
+}, [isMultiSelectRider]);
+
+// Per-member dropdown: replace shared boolean with key string
+// BEFORE: const [dropdownOpen, setDropdownOpen] = useState(false);
+// AFTER:
+const [openDropdownKey, setOpenDropdownKey] = useState(null);
+// Each dropdown: openDropdownKey === member.id ? open : closed`,
+    say: '"We had a rider selection modal where the selection handler was reading stale null values. Root cause: stale closure — the handler captured currentRiderForEdit at mount time, before the modal populated it. I restructured state to break the dependency: pulled isMultiSelectRider into its own boolean state so the handler always reads fresh. For the dropdown conflict problem — multiple members opening simultaneously — I replaced N per-member booleans with a single openDropdownKey string. Only one key, one setter, O(1) to manage. Both fixes made the data flow explicit instead of relying on closure timing."',
+    qa: [
+      { q: 'Why not just use useRef to fix the stale closure?', a: 'useRef gives you the latest value without triggering re-renders. But isMultiSelectRider also drives render logic — which UI variant to show. useState was correct because we needed both: fresh reads AND re-renders when the value changed.' },
+      { q: 'Why openDropdownKey string instead of per-member boolean?', a: 'N booleans for N members requires coordination — close all others when one opens. A single string key is simpler: set it to member.id to open, null to close all. Single source of truth, zero coordination.' }
+    ]
+  },
+  story_backhandler: {
+    title: 'MyPolicy Listing — Back Navigation (iOS + Android)',
+    explain: '<strong>S:</strong> The policy listing screen needed an exit intent popup — confirm before navigating away. This had to work consistently across iOS (swipe-back) and Android (hardware back button).<br><br><strong>T:</strong> Intercept all back navigation paths and show the popup reliably on both platforms.<br><br><strong>A:</strong> On Android — <code>BackHandler</code> was reading stale Redux value due to closure. Fixed by combining a <code>useRef</code> for fresh Redux reads with a separate <code>useState</code> for re-render-triggering visibility. On iOS — permanently disabled swipe-back via <code>gestureEnabled: false</code> and handled it via a custom header back component callback. Documented Android system edge swipe as an unblockable platform constraint.<br><br><strong>R:</strong> Consistent popup behaviour across both platforms, no missed triggers.',
+    code: `// PROBLEM: BackHandler reads stale Redux value
+useEffect(() => {
+  const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+    if (showExitPopup) { ... } // stale — captured at mount ❌
+    return true;
+  });
+  return () => sub.remove();
+}, []);
+
+// FIX: useRef for fresh reads + useState for re-renders
+const showExitRef = useRef(false);
+const [showExitPopup, setShowExitPopup] = useState(false);
+
+const setExit = (val) => {
+  showExitRef.current = val; // always fresh ✅
+  setShowExitPopup(val);     // triggers re-render ✅
+};
+
+useEffect(() => {
+  const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+    if (showExitRef.current) { ... } // reads latest value ✅
+    return true;
+  });
+  return () => sub.remove();
+}, []); // empty deps — stable, registered once
+
+// iOS: disable swipe-back in navigator config
+<Stack.Screen options={{
+  gestureEnabled: false,
+  headerLeft: () => <CustomBackButton onPress={handleBack} />
+}} />`,
+    say: '"The challenge was two completely different platform back behaviours. On Android, BackHandler worked but had a stale closure — registered once at mount with empty deps, so it always read the initial Redux value. My fix: split the concern. useRef holds the latest value for the handler to read synchronously; useState triggers the re-render. They stay in sync via a small setter. On iOS, there\'s no API to interrupt a swipe once it starts — so I disabled it entirely with gestureEnabled: false and replaced it with a custom header button. I also explicitly documented that Android system edge swipe is unblockable — saved the team from chasing a non-bug."',
+    qa: [
+      { q: 'Why not add showExitPopup to BackHandler deps array?', a: 'That re-registers BackHandler every time the state changes — risky because a press during re-registration could be missed. The useRef pattern keeps the handler stable (registered once) while still reading the latest value on each invocation.' },
+      { q: 'Can you block iOS swipe-back mid-gesture?', a: 'No. Once a swipe starts, RN cannot cancel it. gestureEnabled: false prevents it from starting at all. This is a hard platform constraint — iOS treats the gesture as an OS-level interaction.' }
+    ]
+  },
+  story_premv1: {
+    title: 'Premium Calculator v1 — Generic',
+    explain: '<strong>S:</strong> The insurance product had no way for users to estimate premium before purchasing. Users were going through checkout just to see a price — high drop-off.<br><br><strong>T:</strong> Design and implement the first Premium Calculator in the app, end-to-end in React Native.<br><br><strong>A:</strong> Built a form-based UI with four inputs: number of adults, number of children, sum insured amount, and age of the eldest member. Wired it to the premium calculation API. Any field change triggered a recalculation and displayed the updated premium dynamically. Kept state management minimal — local form state, single API call on change, debounced to avoid excess calls on typing.<br><br><strong>R:</strong> Shipped the first self-serve premium estimator in the app. Validated the concept and directly informed the decision to build v2.',
+    code: `// v1 — intentionally simple. Validate concept first.
+const [form, setForm] = useState({
+  adults: 1,
+  children: 0,
+  sumInsured: 500000,
+  eldestAge: 30,
+});
+const [premium, setPremium] = useState(null);
+
+const fetchPremium = useCallback(async () => {
+  const result = await getPremiumAPI({
+    adultCount: form.adults,
+    childCount: form.children,
+    coverageAmount: form.sumInsured,
+    eldestMemberAge: form.eldestAge,
+  });
+  setPremium(result?.premium);
+}, [form]);
+
+// Debounce — avoid API call on every keystroke
+useEffect(() => {
+  const timer = setTimeout(fetchPremium, 400);
+  return () => clearTimeout(timer);
+}, [fetchPremium]);`,
+    say: '"I built the first premium calculator in the app from scratch — there was nothing like it before. I kept v1 intentionally simple: four inputs, one API call, premium displayed dynamically. The deliberate choice was restraint — don\'t over-engineer a feature that hasn\'t been validated yet. It worked: we saw strong engagement, which gave us the signal to build v2 with full member configuration. The key lesson here is that shipping something simple first de-risks the investment in the complex version."',
+    qa: [
+      { q: 'Why not build the full member-aware version from the start?', a: 'Premature complexity. We didn\'t know if users would use a premium calculator at all. V1 took a fraction of the time and gave us real usage data. If it had flopped, we\'d have wasted nothing. Right call for an unvalidated feature.' },
+      { q: 'How did you avoid too many API calls on field changes?', a: 'Debounced the fetch with a short delay after the last change. For numeric inputs like sum insured, users type multiple keystrokes — debouncing batches them into one API call while still feeling responsive.' }
+    ]
+  },
+  story_premv2: {
+    title: 'Premium Calculator v2 — Member-Aware',
+    explain: '<strong>S:</strong> V1 was too generic. Premiums vary based on who exactly is covered — relationships, genders, individual ages — not just a headcount. We redesigned the calculator to reflect how insurance is actually priced.<br><br><strong>T:</strong> Build a significantly more complex, member-aware calculator where users define exactly who is being insured.<br><br><strong>A:</strong> Built a <strong>primary member selection</strong> step (Male / Female) which drives available relationship options. Male primary: Self, Wife, Father, Mother, Brother, Sister, Father-in-law, Mother-in-law. Female primary: Self, Husband, and mirrored relations. Separate <strong>child section</strong> with Son / Daughter. Every member had their own individual age dropdown — managed via <code>activeDropdownMemberId</code> shared state so only one is open at a time. Handled <strong>member combination validity</strong> using locally computed selection IDs (not stale Redux-derived ones). Integrated with <code>PolicyListCard</code> by parsing <code>ctVariantDetails</code> string to surface the right plan variant.<br><br><strong>R:</strong> A fully dynamic, relationship-aware calculator giving accurate premiums based on real family composition.',
+    code: `// Gender-first: primary gender drives relationship options
+const MALE_RELATIONS   = ['Self','Wife','Father','Mother',
+  'Brother','Sister','Father-in-law','Mother-in-law'];
+const FEMALE_RELATIONS = ['Self','Husband','Father','Mother',
+  'Brother','Sister','Father-in-law','Mother-in-law'];
+
+const relations = primaryGender === 'male'
+  ? MALE_RELATIONS : FEMALE_RELATIONS;
+
+// Single key controls ALL member age dropdowns (N members)
+const [activeDropdownMemberId, setActiveDropdownMemberId] = useState(null);
+
+<AgeDropdown
+  isOpen={activeDropdownMemberId === member.id}
+  onOpen={() => setActiveDropdownMemberId(member.id)}
+  onClose={() => setActiveDropdownMemberId(null)}
+  onSelect={(age) => dispatch(setMemberAge({ id: member.id, age }))}
+/>
+
+// Combination validity — compute locally, NOT from stale Redux
+const selectedAdultIds = adultMembers
+  .filter(m => m?.relation !== null)
+  .map(m => m.id)
+  .sort()
+  .join('-');
+
+const isValidCombination = VALID_COMBINATIONS.includes(selectedAdultIds);`,
+    say: '"V2 was a significant rethink. The core insight: insurance is relationship-aware, not headcount-aware — a self + spouse is priced differently from self + parent. So I built a gender-first flow: the primary member\'s gender drives which relationship labels appear, since they differ by gender (wife vs husband). The trickiest state problem was age dropdowns: N members, each with their own picker. A naive per-member boolean would let multiple open simultaneously and require coordination. I used a single activeDropdownMemberId string — set to member id to open, null to close. Elegant, O(1), zero coordination needed. I also hit a Redux staleness bug in combination validity: the Redux-derived selection IDs were one render behind, causing valid combinations to briefly appear invalid. Fix: compute the IDs locally in the same render from component state, skip Redux for this check."',
+    qa: [
+      { q: 'Why not a boolean per member for dropdown state?', a: 'N booleans for N members requires coordination — you\'d have to explicitly close others when one opens. A single string key is the cleaner model: one value, one setter, and the open/closed state of any member is just a === check.' },
+      { q: 'What was the Redux staleness bug in combination validity?', a: 'Redux state updates asynchronously. On the same render as a member selection, the Redux-derived IDs were one cycle behind — so a valid combination briefly looked invalid. Computing IDs locally from component state (same render cycle) fixed the timing.' },
+      { q: 'How did you handle the male/female relationship asymmetry?', a: 'Two static arrays — one per gender. The active list is a derived value: primaryGender === "male" ? MALE_RELATIONS : FEMALE_RELATIONS. No complex logic — the data structure does the work.' }
+    ]
+  }
+};
+</script>
+</body>
+</html>
