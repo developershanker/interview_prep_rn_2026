@@ -73,6 +73,62 @@
     .stats { flex-wrap: wrap; }
     .stat { min-width: 80px; }
   }
+
+  /* ── TRACKING STYLES ── */
+  .progress-bar-wrap { background:#e0e0da; border-radius:20px; height:10px; margin-bottom:6px; overflow:hidden; }
+  .progress-bar-fill { height:100%; border-radius:20px; background: linear-gradient(90deg,#22c55e,#16a34a); transition:width .4s; }
+  .progress-legend { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:#555; margin-bottom:20px; }
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:4px; vertical-align:middle; }
+  .dot-done { background:#22c55e; }
+  .dot-revision { background:#f59e0b; }
+  .dot-skip { background:#d1d5db; }
+
+  .card { position:relative; }
+  .card-status-bar {
+    display:flex; gap:4px; margin-top:10px; border-top:1px solid #f0f0ec; padding-top:8px;
+  }
+  .status-btn {
+    flex:1; padding:4px 0; font-size:11px; font-weight:600; border-radius:6px;
+    border:1px solid #e0e0da; background:#fafaf8; color:#666; cursor:pointer;
+    font-family:inherit; transition:all .15s; text-align:center;
+  }
+  .status-btn:hover { background:#f0f0ec; }
+  .status-btn.active-done    { background:#dcfce7; border-color:#86efac; color:#166534; }
+  .status-btn.active-revision{ background:#fef3c7; border-color:#fcd34d; color:#92400e; }
+  .status-btn.active-skip    { background:#f3f4f6; border-color:#d1d5db; color:#6b7280; }
+
+  .card.status-done    { border-color:#86efac !important; background:#f0fdf4; }
+  .card.status-revision{ border-color:#fcd34d !important; background:#fffbeb; }
+  .card.status-skip    { opacity:.55; }
+
+  /* filter pills */
+  .filter-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+  .filter-pill {
+    padding:5px 13px; border-radius:20px; font-size:12px; border:1px solid #ddd;
+    background:#fff; cursor:pointer; font-family:inherit; color:#555; transition:all .15s;
+  }
+  .filter-pill.active { background:#1a1a18; color:#fff; border-color:#1a1a18; }
+
+  /* floating reset */
+  #reset-btn {
+    position:fixed; bottom:20px; right:20px; background:#fff; border:1px solid #e0e0da;
+    border-radius:10px; padding:8px 14px; font-size:12px; cursor:pointer; font-family:inherit;
+    color:#666; box-shadow:0 2px 8px rgba(0,0,0,.1); z-index:500;
+  }
+  #reset-btn:hover { background:#fee2e2; border-color:#fca5a5; color:#991b1b; }
+
+  /* modal status row */
+  .modal-status-row { display:flex; gap:8px; margin-bottom:16px; }
+  .modal-status-btn {
+    flex:1; padding:8px 0; font-size:13px; font-weight:600; border-radius:8px;
+    border:1.5px solid #e0e0da; background:#fafaf8; color:#555; cursor:pointer;
+    font-family:inherit; transition:all .15s;
+  }
+  .modal-status-btn:hover { background:#f0f0ec; }
+  .modal-status-btn.active-done    { background:#dcfce7; border-color:#86efac; color:#166534; }
+  .modal-status-btn.active-revision{ background:#fef3c7; border-color:#fcd34d; color:#92400e; }
+  .modal-status-btn.active-skip    { background:#f3f4f6; border-color:#d1d5db; color:#6b7280; }
+
 </style>
 </head>
 <body>
@@ -90,6 +146,24 @@
 
   <div class="tip">💡 <strong>How to use:</strong> Click any card to see the concept explained simply, the key code pattern, exactly what to say to the interviewer, and the most asked follow-up questions.</div>
 
+  
+  <!-- PROGRESS TRACKER -->
+  <div id="progress-section" style="margin-bottom:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span style="font-size:13px;font-weight:600;color:#333;">Study Progress</span>
+      <span id="progress-label" style="font-size:12px;color:#888;">0 / 34 done</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="progress-legend">
+      <span><span class="dot dot-done"></span>Studied: <strong id="cnt-done">0</strong></span>
+      <span><span class="dot dot-revision"></span>Needs revision: <strong id="cnt-revision">0</strong></span>
+      <span><span class="dot dot-skip"></span>Skipped: <strong id="cnt-skip">0</strong></span>
+      <span style="color:#aaa;">Untouched: <strong id="cnt-untouched">34</strong></span>
+    </div>
+  </div>
+
+  <div class="filter-row" id="filter-row"><button class="filter-pill active" onclick="setFilter('all',this)">All</button><button class="filter-pill" onclick="setFilter('untouched',this)">Untouched</button><button class="filter-pill" onclick="setFilter('revision',this)">Needs Revision</button><button class="filter-pill" onclick="setFilter('done',this)">Studied ✓</button></div>
+
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('js', this)">JS Fundamentals</button>
     <button class="tab-btn" onclick="showTab('react', this)">React / Hooks</button>
@@ -105,180 +179,180 @@
   <!-- ===== JS FUNDAMENTALS ===== -->
   <div class="section active" id="tab-js">
     <div class="grid">
-      <div class="card" onclick="showModal('closure')">
+      <div class="card" id="card-closure" data-topic="closure" onclick="showModal('closure')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>Closures</h3>
         <p>Inner function remembering outer scope. Stale closures in hooks are the #1 RN interview trap.</p>
-      </div>
-      <div class="card" onclick="showModal('eventloop')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-closure" onclick="setStatus('closure','done')">✅ Studied</button><button class="status-btn" id="sb-revision-closure" onclick="setStatus('closure','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-closure" onclick="setStatus('closure','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-eventloop" data-topic="eventloop" onclick="showModal('eventloop')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>Event Loop &amp; Call Stack</h3>
         <p>How JS executes async code. Macro vs microtasks. Why it matters in RN performance.</p>
-      </div>
-      <div class="card" onclick="showModal('this')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-eventloop" onclick="setStatus('eventloop','done')">✅ Studied</button><button class="status-btn" id="sb-revision-eventloop" onclick="setStatus('eventloop','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-eventloop" onclick="setStatus('eventloop','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-this" data-topic="this" onclick="showModal('this')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>this Keyword</h3>
         <p>4 binding rules. Arrow vs regular functions. Lost context in callbacks.</p>
-      </div>
-      <div class="card" onclick="showModal('promises')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-this" onclick="setStatus('this','done')">✅ Studied</button><button class="status-btn" id="sb-revision-this" onclick="setStatus('this','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-this" onclick="setStatus('this','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-promises" data-topic="promises" onclick="showModal('promises')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>Promises &amp; async/await</h3>
         <p>States, chaining, Promise.all vs allSettled, race conditions, error handling.</p>
-      </div>
-      <div class="card" onclick="showModal('scope')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-promises" onclick="setStatus('promises','done')">✅ Studied</button><button class="status-btn" id="sb-revision-promises" onclick="setStatus('promises','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-promises" onclick="setStatus('promises','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-scope" data-topic="scope" onclick="showModal('scope')">
         <span class="badge badge-core">Core</span>
         <h3>Scope &amp; Hoisting</h3>
         <p>var vs let vs const. Temporal dead zone. Function hoisting traps.</p>
-      </div>
-      <div class="card" onclick="showModal('objects')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-scope" onclick="setStatus('scope','done')">✅ Studied</button><button class="status-btn" id="sb-revision-scope" onclick="setStatus('scope','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-scope" onclick="setStatus('scope','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-objects" data-topic="objects" onclick="showModal('objects')">
         <span class="badge badge-core">Core</span>
         <h3>Object Literals &amp; Destructuring</h3>
         <p>Shorthand, computed keys, spread/rest, shallow copy trap in Redux.</p>
-      </div>
-      <div class="card" onclick="showModal('prototype')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-objects" onclick="setStatus('objects','done')">✅ Studied</button><button class="status-btn" id="sb-revision-objects" onclick="setStatus('objects','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-objects" onclick="setStatus('objects','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-prototype" data-topic="prototype" onclick="showModal('prototype')">
         <span class="badge badge-imp">Important</span>
         <h3>Prototype Chain</h3>
         <p>How JS objects inherit. __proto__ vs prototype. class as syntactic sugar.</p>
-      </div>
-      <div class="card" onclick="showModal('immutability')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-prototype" onclick="setStatus('prototype','done')">✅ Studied</button><button class="status-btn" id="sb-revision-prototype" onclick="setStatus('prototype','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-prototype" onclick="setStatus('prototype','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-immutability" data-topic="immutability" onclick="showModal('immutability')">
         <span class="badge badge-core">Core</span>
         <h3>Immutability &amp; Pure Functions</h3>
         <p>Why Redux needs new references. Reference equality. Shallow vs deep copy.</p>
-      </div>
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-immutability" onclick="setStatus('immutability','done')">✅ Studied</button><button class="status-btn" id="sb-revision-immutability" onclick="setStatus('immutability','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-immutability" onclick="setStatus('immutability','skip')">⏭ Skip</button></div></div>
     </div>
   </div>
 
   <!-- ===== REACT ===== -->
   <div class="section" id="tab-react">
     <div class="grid">
-      <div class="card" onclick="showModal('useeffect')">
+      <div class="card" id="card-useeffect" data-topic="useeffect" onclick="showModal('useeffect')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>useEffect Deep Dive</h3>
         <p>Deps array rules, cleanup, race conditions, stale closure, when NOT to use it.</p>
-      </div>
-      <div class="card" onclick="showModal('usememocb')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-useeffect" onclick="setStatus('useeffect','done')">✅ Studied</button><button class="status-btn" id="sb-revision-useeffect" onclick="setStatus('useeffect','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-useeffect" onclick="setStatus('useeffect','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-usememocb" data-topic="usememocb" onclick="showModal('usememocb')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>useMemo vs useCallback</h3>
         <p>What they memoize. Referential equality trap. When they help vs hurt.</p>
-      </div>
-      <div class="card" onclick="showModal('reconciliation')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-usememocb" onclick="setStatus('usememocb','done')">✅ Studied</button><button class="status-btn" id="sb-revision-usememocb" onclick="setStatus('usememocb','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-usememocb" onclick="setStatus('usememocb','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-reconciliation" data-topic="reconciliation" onclick="showModal('reconciliation')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>Reconciliation &amp; Keys</h3>
         <p>How React diffs the tree. Why index-as-key causes bugs.</p>
-      </div>
-      <div class="card" onclick="showModal('context')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-reconciliation" onclick="setStatus('reconciliation','done')">✅ Studied</button><button class="status-btn" id="sb-revision-reconciliation" onclick="setStatus('reconciliation','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-reconciliation" onclick="setStatus('reconciliation','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-context" data-topic="context" onclick="showModal('context')">
         <span class="badge badge-core">Core</span>
         <h3>Context API</h3>
         <p>Provider re-render problem. Context vs Redux/Zustand. Splitting contexts.</p>
-      </div>
-      <div class="card" onclick="showModal('customhooks')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-context" onclick="setStatus('context','done')">✅ Studied</button><button class="status-btn" id="sb-revision-context" onclick="setStatus('context','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-context" onclick="setStatus('context','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-customhooks" data-topic="customhooks" onclick="showModal('customhooks')">
         <span class="badge badge-core">Core</span>
         <h3>Custom Hooks</h3>
         <p>Extracting logic, composability, hook rules. Common design question.</p>
-      </div>
-      <div class="card" onclick="showModal('concurrent')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-customhooks" onclick="setStatus('customhooks','done')">✅ Studied</button><button class="status-btn" id="sb-revision-customhooks" onclick="setStatus('customhooks','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-customhooks" onclick="setStatus('customhooks','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-concurrent" data-topic="concurrent" onclick="showModal('concurrent')">
         <span class="badge badge-imp">Important</span>
         <h3>Concurrent React (React 18)</h3>
         <p>useTransition, useDeferredValue, automatic batching, tearing problem.</p>
-      </div>
-      <div class="card" onclick="showModal('memo')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-concurrent" onclick="setStatus('concurrent','done')">✅ Studied</button><button class="status-btn" id="sb-revision-concurrent" onclick="setStatus('concurrent','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-concurrent" onclick="setStatus('concurrent','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-memo" data-topic="memo" onclick="showModal('memo')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>React.memo &amp; Re-renders</h3>
         <p>Shallow comparison. Why props.children breaks memo. Profiler usage.</p>
-      </div>
-      <div class="card" onclick="showModal('errorboundary')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-memo" onclick="setStatus('memo','done')">✅ Studied</button><button class="status-btn" id="sb-revision-memo" onclick="setStatus('memo','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-memo" onclick="setStatus('memo','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-errorboundary" data-topic="errorboundary" onclick="showModal('errorboundary')">
         <span class="badge badge-core">Core</span>
         <h3>Error Boundaries</h3>
         <p>Catching render errors. getDerivedStateFromError vs componentDidCatch.</p>
-      </div>
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-errorboundary" onclick="setStatus('errorboundary','done')">✅ Studied</button><button class="status-btn" id="sb-revision-errorboundary" onclick="setStatus('errorboundary','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-errorboundary" onclick="setStatus('errorboundary','skip')">⏭ Skip</button></div></div>
     </div>
   </div>
 
   <!-- ===== REACT NATIVE ===== -->
   <div class="section" id="tab-rn">
     <div class="grid">
-      <div class="card" onclick="showModal('rnarch')">
+      <div class="card" id="card-rnarch" data-topic="rnarch" onclick="showModal('rnarch')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>New Architecture (JSI/Fabric)</h3>
         <p>Old bridge vs JSI. Fabric renderer. TurboModules. Hermes. Synchronous native.</p>
-      </div>
-      <div class="card" onclick="showModal('flatlist')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-rnarch" onclick="setStatus('rnarch','done')">✅ Studied</button><button class="status-btn" id="sb-revision-rnarch" onclick="setStatus('rnarch','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-rnarch" onclick="setStatus('rnarch','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-flatlist" data-topic="flatlist" onclick="showModal('flatlist')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>FlatList Optimisation</h3>
         <p>keyExtractor, getItemLayout, windowSize, removeClippedSubviews, FlashList.</p>
-      </div>
-      <div class="card" onclick="showModal('animation')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-flatlist" onclick="setStatus('flatlist','done')">✅ Studied</button><button class="status-btn" id="sb-revision-flatlist" onclick="setStatus('flatlist','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-flatlist" onclick="setStatus('flatlist','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-animation" data-topic="animation" onclick="showModal('animation')">
         <span class="badge badge-core">Core</span>
         <h3>Animated vs Reanimated 3</h3>
         <p>JS thread vs UI thread. Worklets. useSharedValue, useAnimatedStyle.</p>
-      </div>
-      <div class="card" onclick="showModal('navigation')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-animation" onclick="setStatus('animation','done')">✅ Studied</button><button class="status-btn" id="sb-revision-animation" onclick="setStatus('animation','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-animation" onclick="setStatus('animation','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-navigation" data-topic="navigation" onclick="showModal('navigation')">
         <span class="badge badge-core">Core</span>
         <h3>React Navigation Internals</h3>
         <p>Stack vs NativeStack. BackHandler. Deep linking. Stale closure trap.</p>
-      </div>
-      <div class="card" onclick="showModal('hermes')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-navigation" onclick="setStatus('navigation','done')">✅ Studied</button><button class="status-btn" id="sb-revision-navigation" onclick="setStatus('navigation','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-navigation" onclick="setStatus('navigation','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-hermes" data-topic="hermes" onclick="showModal('hermes')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>Hermes &amp; Debug vs Release</h3>
         <p>AOT bytecode. Why bugs appear only in release. Timing-driven vs state-driven.</p>
-      </div>
-      <div class="card" onclick="showModal('rnrender')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-hermes" onclick="setStatus('hermes','done')">✅ Studied</button><button class="status-btn" id="sb-revision-hermes" onclick="setStatus('hermes','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-hermes" onclick="setStatus('hermes','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-rnrender" data-topic="rnrender" onclick="showModal('rnrender')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>RN Rendering Pipeline</h3>
         <p>JS → Shadow → Main thread. Yoga layout. 16ms frame budget.</p>
-      </div>
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-rnrender" onclick="setStatus('rnrender','done')">✅ Studied</button><button class="status-btn" id="sb-revision-rnrender" onclick="setStatus('rnrender','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-rnrender" onclick="setStatus('rnrender','skip')">⏭ Skip</button></div></div>
     </div>
   </div>
 
   <!-- ===== TYPESCRIPT ===== -->
   <div class="section" id="tab-ts">
     <div class="grid">
-      <div class="card" onclick="showModal('generics')">
+      <div class="card" id="card-generics" data-topic="generics" onclick="showModal('generics')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>Generics</h3>
         <p>Type parameters. Constraints (extends). Generic hooks and components.</p>
-      </div>
-      <div class="card" onclick="showModal('utility')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-generics" onclick="setStatus('generics','done')">✅ Studied</button><button class="status-btn" id="sb-revision-generics" onclick="setStatus('generics','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-generics" onclick="setStatus('generics','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-utility" data-topic="utility" onclick="showModal('utility')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>Utility Types</h3>
         <p>Partial, Pick, Omit, Record, ReturnType. Used constantly in props.</p>
-      </div>
-      <div class="card" onclick="showModal('unions')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-utility" onclick="setStatus('utility','done')">✅ Studied</button><button class="status-btn" id="sb-revision-utility" onclick="setStatus('utility','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-utility" onclick="setStatus('utility','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-unions" data-topic="unions" onclick="showModal('unions')">
         <span class="badge badge-core">Core</span>
         <h3>Union &amp; Intersection Types</h3>
         <p>Discriminated unions for state machines. Type guards and narrowing.</p>
-      </div>
-      <div class="card" onclick="showModal('mapped')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-unions" onclick="setStatus('unions','done')">✅ Studied</button><button class="status-btn" id="sb-revision-unions" onclick="setStatus('unions','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-unions" onclick="setStatus('unions','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-mapped" data-topic="mapped" onclick="showModal('mapped')">
         <span class="badge badge-imp">Important</span>
         <h3>Mapped &amp; Conditional Types</h3>
         <p>keyof, typeof, infer. Building dynamic types. Template literal types.</p>
-      </div>
-      <div class="card" onclick="showModal('strict')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-mapped" onclick="setStatus('mapped','done')">✅ Studied</button><button class="status-btn" id="sb-revision-mapped" onclick="setStatus('mapped','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-mapped" onclick="setStatus('mapped','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-strict" data-topic="strict" onclick="showModal('strict')">
         <span class="badge badge-core">Core</span>
         <h3>Strict Mode &amp; Pitfalls</h3>
         <p>strictNullChecks, type assertion vs guard. as unknown pattern.</p>
-      </div>
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-strict" onclick="setStatus('strict','done')">✅ Studied</button><button class="status-btn" id="sb-revision-strict" onclick="setStatus('strict','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-strict" onclick="setStatus('strict','skip')">⏭ Skip</button></div></div>
     </div>
   </div>
 
   <!-- ===== RENDERING ===== -->
   <div class="section" id="tab-render">
     <div class="grid">
-      <div class="card" onclick="showModal('ssr')">
+      <div class="card" id="card-ssr" data-topic="ssr" onclick="showModal('ssr')">
         <span class="badge badge-hot">🔥 Most asked</span>
         <h3>SSR vs CSR vs SSG</h3>
         <p>When each is used. Hydration. React Server Components. ISR.</p>
-      </div>
-      <div class="card" onclick="showModal('vdom')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-ssr" onclick="setStatus('ssr','done')">✅ Studied</button><button class="status-btn" id="sb-revision-ssr" onclick="setStatus('ssr','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-ssr" onclick="setStatus('ssr','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-vdom" data-topic="vdom" onclick="showModal('vdom')">
         <span class="badge badge-core">Core</span>
         <h3>Virtual DOM &amp; Fibre</h3>
         <p>Why React uses VDOM. Diff algorithm. Commit vs render phase.</p>
-      </div>
-      <div class="card" onclick="showModal('redux')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-vdom" onclick="setStatus('vdom','done')">✅ Studied</button><button class="status-btn" id="sb-revision-vdom" onclick="setStatus('vdom','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-vdom" onclick="setStatus('vdom','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-redux" data-topic="redux" onclick="showModal('redux')">
         <span class="badge badge-core">Core</span>
         <h3>Redux Selector Optimisation</h3>
         <p>Reselect, createSelector, normalised state, subscription model.</p>
-      </div>
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-redux" onclick="setStatus('redux','done')">✅ Studied</button><button class="status-btn" id="sb-revision-redux" onclick="setStatus('redux','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-redux" onclick="setStatus('redux','skip')">⏭ Skip</button></div></div>
     </div>
   </div>
 
@@ -649,26 +723,26 @@ function binarySearch(arr, target) {
     <div class="tip-amber">⚠️ <strong>Delivery tip:</strong> Lead with impact ("Users were seeing X problem..."), own the decision-making ("I chose this approach because..."), and always have one follow-up layer ready ("If they ask why not X, I'll say...").</div>
 
     <div class="grid">
-      <div class="card" onclick="showModal('story_addons')">
+      <div class="card" id="card-story_addons" data-topic="story_addons" onclick="showModal('story_addons')">
         <span class="badge badge-hot">🔥 Strong story</span>
         <h3>AddOns Selection Modal</h3>
         <p>Stale closure fix, per-member dropdown state, API payload enrichment. Classic React state bug with a clean solution.</p>
-      </div>
-      <div class="card" onclick="showModal('story_backhandler')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-story_addons" onclick="setStatus('story_addons','done')">✅ Studied</button><button class="status-btn" id="sb-revision-story_addons" onclick="setStatus('story_addons','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-story_addons" onclick="setStatus('story_addons','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-story_backhandler" data-topic="story_backhandler" onclick="showModal('story_backhandler')">
         <span class="badge badge-hot">🔥 Strong story</span>
         <h3>MyPolicy Listing — Back Navigation</h3>
         <p>Exit intent popup across iOS + Android. useRef + useState combo for stale Redux reads. Platform constraints.</p>
-      </div>
-      <div class="card" onclick="showModal('story_premv1')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-story_backhandler" onclick="setStatus('story_backhandler','done')">✅ Studied</button><button class="status-btn" id="sb-revision-story_backhandler" onclick="setStatus('story_backhandler','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-story_backhandler" onclick="setStatus('story_backhandler','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-story_premv1" data-topic="story_premv1" onclick="showModal('story_premv1')">
         <span class="badge badge-core">Core</span>
         <h3>Premium Calculator v1 (Generic)</h3>
         <p>First-ever premium calculator in the app. Generic inputs: adults, children, sum insured, eldest age. Built from scratch.</p>
-      </div>
-      <div class="card" onclick="showModal('story_premv2')">
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-story_premv1" onclick="setStatus('story_premv1','done')">✅ Studied</button><button class="status-btn" id="sb-revision-story_premv1" onclick="setStatus('story_premv1','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-story_premv1" onclick="setStatus('story_premv1','skip')">⏭ Skip</button></div></div>
+      <div class="card" id="card-story_premv2" data-topic="story_premv2" onclick="showModal('story_premv2')">
         <span class="badge badge-hot">🔥 Strong story</span>
         <h3>Premium Calculator v2 (Member-Aware)</h3>
         <p>Gender-first flow, relationship-based member selection, individual age dropdowns, combination validity. Complex state management.</p>
-      </div>
+      <div class="card-status-bar" onclick="event.stopPropagation()"><button class="status-btn" id="sb-done-story_premv2" onclick="setStatus('story_premv2','done')">✅ Studied</button><button class="status-btn" id="sb-revision-story_premv2" onclick="setStatus('story_premv2','revision')">🔄 Revise</button><button class="status-btn" id="sb-skip-story_premv2" onclick="setStatus('story_premv2','skip')">⏭ Skip</button></div></div>
     </div>
 
     <div style="margin-top: 20px;">
@@ -704,6 +778,11 @@ function binarySearch(arr, target) {
 <div class="modal-bg" id="modal-bg" onclick="handleBgClick(event)">
   <div class="modal" id="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-status-row" id="modal-status-row">
+      <button class="modal-status-btn" id="msbtn-done" onclick="setStatusFromModal('done')">✅ Studied</button>
+      <button class="modal-status-btn" id="msbtn-revision" onclick="setStatusFromModal('revision')">🔄 Needs Revision</button>
+      <button class="modal-status-btn" id="msbtn-skip" onclick="setStatusFromModal('skip')">⏭ Skip</button>
+    </div>
     <h2 id="modal-title"></h2>
     <div id="modal-body"></div>
   </div>
@@ -1565,5 +1644,7 @@ const isValidCombination = VALID_COMBINATIONS.includes(selectedAdultIds);`,
   }
 };
 </script>
+
+<button id="reset-btn" onclick="resetAll()">🗑 Reset all progress</button>
 </body>
 </html>
