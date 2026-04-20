@@ -1643,6 +1643,147 @@ const isValidCombination = VALID_COMBINATIONS.includes(selectedAdultIds);`,
     ]
   }
 };
+
+// ════════════════════════════════════════════
+// TRACKING ENGINE
+// ════════════════════════════════════════════
+
+var TOPIC_KEYS = ['closure','eventloop','this','promises','scope','objects','prototype','immutability',
+  'useeffect','usememocb','reconciliation','context','customhooks','concurrent','memo','errorboundary',
+  'rnarch','flatlist','animation','navigation','hermes','rnrender',
+  'generics','utility','unions','mapped','strict',
+  'ssr','vdom','redux',
+  'story_addons','story_backhandler','story_premv1','story_premv2'];
+
+var TOTAL = TOPIC_KEYS.length;
+var STORAGE_KEY = 'rn_study_progress';
+var progress = {};
+var currentFilter = 'all';
+var currentModalTopic = null;
+
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    progress = raw ? JSON.parse(raw) : {};
+  } catch(e) { progress = {}; }
+}
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch(e) {}
+}
+
+function setStatus(topicKey, status) {
+  if (progress[topicKey] === status) {
+    delete progress[topicKey];
+  } else {
+    progress[topicKey] = status;
+  }
+  saveProgress();
+  applyCardStatus(topicKey);
+  updateProgressBar();
+  applyFilter(currentFilter);
+  if (currentModalTopic === topicKey) refreshModalButtons(topicKey);
+}
+
+function setStatusFromModal(status) {
+  if (!currentModalTopic) return;
+  setStatus(currentModalTopic, status);
+}
+
+function applyCardStatus(key) {
+  var card = document.getElementById('card-' + key);
+  if (!card) return;
+  var status = progress[key] || null;
+  card.classList.remove('status-done', 'status-revision', 'status-skip');
+  if (status) card.classList.add('status-' + status);
+  ['done','revision','skip'].forEach(function(s) {
+    var btn = document.getElementById('sb-' + s + '-' + key);
+    if (!btn) return;
+    btn.classList.remove('active-done','active-revision','active-skip');
+    if (s === status) btn.classList.add('active-' + s);
+  });
+}
+
+function applyAllCards() {
+  TOPIC_KEYS.forEach(applyCardStatus);
+}
+
+function updateProgressBar() {
+  var done = 0, revision = 0, skip = 0;
+  TOPIC_KEYS.forEach(function(k) {
+    var s = progress[k];
+    if (s === 'done') done++;
+    else if (s === 'revision') revision++;
+    else if (s === 'skip') skip++;
+  });
+  var pct = Math.round((done / TOTAL) * 100);
+  var fill = document.getElementById('progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  var lbl = document.getElementById('progress-label');
+  if (lbl) lbl.textContent = done + ' / ' + TOTAL + ' studied (' + pct + '%)';
+  var cd = document.getElementById('cnt-done'); if (cd) cd.textContent = done;
+  var cr = document.getElementById('cnt-revision'); if (cr) cr.textContent = revision;
+  var cs = document.getElementById('cnt-skip'); if (cs) cs.textContent = skip;
+  var cu = document.getElementById('cnt-untouched'); if (cu) cu.textContent = TOTAL - done - revision - skip;
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-pill').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  applyFilter(f);
+}
+
+function applyFilter(f) {
+  TOPIC_KEYS.forEach(function(key) {
+    var card = document.getElementById('card-' + key);
+    if (!card) return;
+    var status = progress[key] || 'untouched';
+    var show = f === 'all' ||
+               (f === 'untouched' && !progress[key]) ||
+               (f === 'revision'  && status === 'revision') ||
+               (f === 'done'      && status === 'done');
+    card.style.display = show ? '' : 'none';
+  });
+}
+
+// Override showModal to track current topic
+var _origShowModal = showModal;
+showModal = function(id) {
+  currentModalTopic = id;
+  _origShowModal(id);
+  refreshModalButtons(id);
+};
+
+var _origCloseModal = closeModal;
+closeModal = function() {
+  currentModalTopic = null;
+  _origCloseModal();
+};
+
+function refreshModalButtons(key) {
+  var status = progress[key] || null;
+  ['done','revision','skip'].forEach(function(s) {
+    var btn = document.getElementById('msbtn-' + s);
+    if (!btn) return;
+    btn.classList.remove('active-done','active-revision','active-skip');
+    if (s === status) btn.classList.add('active-' + s);
+  });
+}
+
+function resetAll() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  progress = {};
+  saveProgress();
+  applyAllCards();
+  updateProgressBar();
+  applyFilter(currentFilter);
+}
+
+// Boot
+loadProgress();
+applyAllCards();
+updateProgressBar();
 </script>
 
 <button id="reset-btn" onclick="resetAll()">🗑 Reset all progress</button>
